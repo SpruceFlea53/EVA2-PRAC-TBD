@@ -1,0 +1,367 @@
+
+1. Crear un reporte con el número de clientes que han realizado órdenes.
+
+select count(distinct(A.customerid)) as numero_clientes_con_orden from customers A inner join orders B on A.customerid=B.customerid;
++---------------------------+
+| numero_clientes_con_orden |
++---------------------------+
+|                       89  | 
++---------------------------+
+
+2. Crear un reporte con el número de clientes que NO han realizado órdenes.
+
+ select B.ContactName from orders A right outer join customers B on A.CustomerID = B.CustomerID where A.CustomerID is null;
+
+ select count(A.customerid) from customers A left outer join orders B on A.customerid = B.customerid where B.customerid is null;
++---------------------+
+| count(A.customerid) |
++---------------------+
+|                   4 |
++---------------------+
+
+
+3. Crear un reporte con el número de empleados que han realizado órdenes.
+
+
+select count(distinct(A.employeeID)) from employees A inner join orders B on A.employeeID=B.employeeID;
++-------------------------------+
+| count(distinct(A.employeeID)) |
++-------------------------------+
+|                             9 |
++-------------------------------+
+
+
+4. Crear un reporte con los productos que aparezcan en órdenes.
+
+
+select distinct(A.productname) from products A inner join orderdetails B on A.productid = B.productid;
++----------------------------------+
+| productname                      |
++----------------------------------+
+| Alice Mutton                     |
+| Aniseed Syrup                    |
+| Boston Crab Meat                 |
+| Camembert Pierrot                |
+| Carnarvon Tigers                 |
+| Chai                             |
+| Chang                            |
+| Chartreuse verte                 |
+| Chef Anton's Cajun Seasoning     |
+| Chef Anton's Gumbo Mix           |
+| Chocolade                        |
+| Cte de Blaye                     |
+| Escargots de Bourgogne           |
+| Filo Mix                         |
+| Flotemysost                      |
+| Geitost                          |
+| Genen Shouyu                     |
+| Gnocchi di nonna Alice           |
+| Gorgonzola Telino                |
+| Grandma's Boysenberry Spread     |
+| Gravad lax                       |
+| Guaran Fantstica                 |
+| Gudbrandsdalsost                 |
+| Gula Malacca                     |
+| Gumbr Gummibrchen                |
+| Gustaf's Knckebrd                |
+| Ikura                            |
+| Inlagd Sill                      |
+| Ipoh Coffee                      |
+| Jack's New England Clam Chowder  |
+| Konbu                            |
+| Lakkalikri                       |
+| Laughing Lumberjack Lager        |
+| Longlife Tofu                    |
+| Louisiana Fiery Hot Pepper Sauce |
+| Louisiana Hot Spiced Okra        |
+| Manjimup Dried Apples            |
+| Mascarpone Fabioli               |
+| Maxilaku                         |
+| Mishi Kobe Niku                  |
+| Mozzarella di Giovanni           |
+| Nord-Ost Matjeshering            |
+| Northwoods Cranberry Sauce       |
+| NuNuCa Nu-Nougat-Creme           |
+| Original Frankfurter grne Soe    |
+| Outback Lager                    |
+| Pavlova                          |
+| Perth Pasties                    |
+| Pt chinois                       |
+| Queso Cabrales                   |
+| Queso Manchego La Pastora        |
+| Raclette Courdavault             |
+| Ravioli Angelo                   |
+| Rd Kaviar                        |
+| Rhnbru Klosterbier               |
+| Rogede sild                      |
+| Rssle Sauerkraut                 |
+| Sasquatch Ale                    |
+| Schoggi Schokolade               |
+| Scottish Longbreads              |
+| Singaporean Hokkien Fried Mee    |
+| Sir Rodney's Marmalade           |
+| Sir Rodney's Scones              |
+| Sirop d'rable                    |
+| Spegesild                        |
+| Steeleye Stout                   |
+| Tarte au sucre                   |
+| Teatime Chocolate Biscuits       |
+| Thringer Rostbratwurst           |
+| Tofu                             |
+| Tourtire                         |
+| Tunnbrd                          |
+| Uncle Bob's Organic Dried Pears  |
+| Valkoinen suklaa                 |
+| Vegie-spread                     |
+| Wimmers gute Semmelkndel         |
+| Zaanse koeken                    |
++----------------------------------+
+
+
+5. Crear un reporte con los productos que NO aparezcan en órdenes. Si no aparecen, agregar
+uno ficticio y repetir el query
+
+mysql-sql> select distinct(A.productname) from products A left outer join orderdetails B on A.productid = B.productid where B.productid is null;
+Empty set (0.00 sec)
+
+
+ insert into products(productname,unitprice)values('Sabritas','19.5');
+Query OK, 1 row affected (0.08 sec)
+
+ select distinct(A.productname) from products A left outer join orderdetails B on A.productid = B.productid where B.productid is null;
++-------------+
+| productname |
++-------------+
+| Sabritas    |
++-------------+
+
+
+6. Crear un reporte con el número de empleados que NO han realizado órdenes.
+
+select count(A.employeeID) from employees A left outer join orders B on A.employeeID = B.employeeID where B.employeeID is null;
++---------------------+
+| count(A.employeeID) |
++---------------------+
+|                   0 |
++---------------------+
+
+
+7. Crear un reporte con las categorías de productos de los cuales se han realizado órdenes.
+
+ select distinct(C.CategoryName) from products A inner join orderdetails B on A.productid=B.productid inner join categories C on A.categoryID = C.categoryID;
+
++----------------+
+| CategoryName   |
++----------------+
+| Beverages      |
+| Condiments     |
+| Confections    |
+| Dairy Products |
+| Grains/Cereals |
+| Meat/Poultry   |
+| Produce        |
+| Seafood        |
++----------------+
+
+8. Crear un reporte con las categorías de productos de los cuales NO se han realizado órdenes.
+
+select distinct(C.CategoryName) from products A left outer join orderdetails B on A.productid=B.productid inner join categories C on A.categoryID = C.categoryID where B.productid is null;
+Empty set (0.00 sec)
+
+
+9. Crear un reporte con los productos DESCONTINUADOS que aparezcan en órdenes.
+
+
+select distinct(A.productname) from products A
+left outer join orderdetails B on A.productid=B.productid
+where A.discontinued = 1;
+
+
+10. Crear un reporte con los productos DESCONTINUADOS que NO aparezcan en órdenes.
+
+select distinct(A.productname) from products A
+left outer join orderdetails B on A.productid=B.productid
+where A.discontinued = 1 and B.orderid is null;
+
+
+11. Crear un reporte con el Nombre del Producto y el nombre de la Categoría a la que pertenece.
+
+ select A.productName, B.categoryName from Products A inner join Categories B on A.CategoryID=B.CategoryID;
++----------------------------------+----------------+
+| productName                      | categoryName   |
++----------------------------------+----------------+
+| Chai                             | Beverages      |
+| Chang                            | Beverages      |
+| Guaran Fantstica                 | Beverages      |
+| Sasquatch Ale                    | Beverages      |
+| Steeleye Stout                   | Beverages      |
+| Cte de Blaye                     | Beverages      |
+| Chartreuse verte                 | Beverages      |
+| Ipoh Coffee                      | Beverages      |
+| Laughing Lumberjack Lager        | Beverages      |
+| Outback Lager                    | Beverages      |
+| Rhnbru Klosterbier               | Beverages      |
+| Lakkalikri                       | Beverages      |
+| Aniseed Syrup                    | Condiments     |
+| Chef Anton's Cajun Seasoning     | Condiments     |
+
+
+12. Crear un reporte con todas las categorías cuyos productos tengan ventas (existan en las órdenes de compra)
+
+select distinct(A.CategoryName) from Categories A inner join products B on A.categoryID=B.categoryID inner join orderdetails C on B.productID = C.productID;
++----------------+
+| CategoryName   |
++----------------+
+| Beverages      |
+| Condiments     |
+| Confections    |
+| Dairy Products |
+| Grains/Cereals |
+| Meat/Poultry   |
+| Produce        |
+| Seafood        |
++----------------+
+
+13. Crear un reporte que muestre la cantidad total de productos ordenados. Mostrar el
+nombre del producto y en una columna “TotalUnits” el total ordenado.
+
+///////insert into orderdetails(OrderID,productid,quantity)values(10248,'78',10);
+
+            //(distinct)//
+mysql-sql> select (A.productName), sum(B.quantity) from products A inner join orderdetails B on A.productID = B.productID group by (A.productID);
+
++----------------------------------+-----------------+
+| productName                      | sum(B.quantity) |
++----------------------------------+-----------------+
+| Chai                             |             828 |
+| Chang                            |            1057 |
+| Aniseed Syrup                    |             328 |
+| Chef Anton's Cajun Seasoning     |             453 |
+| Chef Anton's Gumbo Mix           |             298 |
+| Grandma's Boysenberry Spread     |             301 |
+| Uncle Bob's Organic Dried Pears  |             763 |
+| Northwoods Cranberry Sauce       |             372 |
+
+
+
+	A)
+
+
+ select (A.productName), sum(B.quantity) from products A inner join orderdetails B on A.productID = B.productID group by (A.productID) order by sum(B.quantity) desc limit 10;
++------------------------+-----------------+
+| productName            | sum(B.quantity) |
++------------------------+-----------------+
+| Camembert Pierrot      |            1577 |
+| Raclette Courdavault   |            1496 |
+| Gorgonzola Telino      |            1397 |
+| Gnocchi di nonna Alice |            1263 |
+| Pavlova                |            1158 |
+| Rhnbru Klosterbier     |            1155 |
+| Guaran Fantstica       |            1125 |
+| Boston Crab Meat       |            1103 |
+| Tarte au sucre         |            1083 |
+| Chang                  |            1057 |
++------------------------+-----------------+
+
+
+	B)
+
+ select (A.productName), sum(B.quantity) from products A inner join orderdetails B on A.productID = B.productID group by (A.productID) order by sum(B.quantity)  limit 10;
+
++---------------------------+-----------------+
+| productName               | sum(B.quantity) |
++---------------------------+-----------------+
+| Sabritas                  |              25 |
+| Mishi Kobe Niku           |              95 |
+| Genen Shouyu              |             122 |
+| Gravad lax                |             125 |
+| Chocolade                 |             138 |
+| Laughing Lumberjack Lager |             184 |
+| Valkoinen suklaa          |             235 |
+| Louisiana Hot Spiced Okra |             239 |
+| Rd Kaviar                 |             293 |
+| Longlife Tofu             |             297 |
++---------------------------+-----------------+
+
+
+
+
+
+
+
+
+
+14. Crear un reporte que muestre la cantidad total de productos ordenados POR REGION
+(cada EMPLEADO tiene una región asignada). Mostrar el nombre de la región y en una
+columna “TotalUnits” el total ordenado.
+
+
+
+
+
+orderdetails region employees orders
+
+
+select A.regionDescription,sum(D.quantity) from region A 
+inner join employees B on A.regionID = B.region 
+inner join orders C on C.employeeID=B.employeeID 
+inner join orderdetails D on D.orderID=C.orderID 
+group by (A.regionID);
+
+Empty set, 20 warnings (0.00 sec)
+Warning (code 1292): Truncated incorrect DOUBLE value: 'WA'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'WA'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'WA'
+
+//////////////////////////////////////////////////////////////////
+
+
+select A.region,sum(C.quantity) from employees A
+inner join orders B on B.employeeID=A.employeeID 
+inner join orderdetails C on C.orderid=B.orderid
+group by (A.region);
+
++--------+-----------------+
+| region | sum(C.quantity) |
++--------+-----------------+
+| null   |           13897 |
+| WA     |           37445 |
++--------+-----------------+
+
+ 
+
+15. Crear un reporte que muestre la cantidad total de productos ordenados POR CIUDAD
+(cada CLIENTE tiene una ciudad de origen). Mostrar el nombre de la ciudad y en una
+columna “TotalUnits” el total ordenado.
+
+
+select A.city,sum(c.quantity) from customers A 
+inner join orders B on A.customerid = B.customerid
+inner join orderdetails C on C.orderid = B.orderID
+group by (A.city);
+
+
+
+
+16. Crear un reporte que muestre la cantidad total de ventas (unidades) POR CATEGORIA.
+Mostrar el nombre de la categoría y en una columna “TotalUnits” el total ordenado.
+
+categories products orderdetails orders 
+
+select A.categoryname, count(D.orderID) from categories A
+inner join products B on A.categoryid=B.categoryid
+inner join orderdetails C on B.productid=C.productid
+inner join orders D on C.orderid=D.orderid
+group by (A.categoryname);
+
+
+
+
+17. Crear un reporte que muestre la cantidad total de productos ordenados. Mostrar el
+nombre del producto y en una columna “TotalUnits” el total ordenado. Solo muestre los
+productos para los cuales la cantidad ordenada es menor que 200 (investigar el uso de la
+cláusula HAVING).
+
+
+
+

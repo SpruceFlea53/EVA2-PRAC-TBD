@@ -1,0 +1,306 @@
+right outer join
+
+
+
+MySQL Shell 1.0.10
+
+Copyright (c) 2016, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+Currently in JavaScript mode. Use \sql to switch to SQL mode and execute queries
+.
+mysql-js> \sql
+Switching to SQL mode... Commands end with ;
+mysql-sql> \connect -c root@localhost
+Creating a Classic Session to 'root@localhost'
+Enter password: ****
+Your MySQL connection id is 3
+Server version: 5.7.20-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> \use evaluacion_2
+Schema set to `evaluacion_2`.
+mysql-sql> show tables;
++------------------------+
+| Tables_in_evaluacion_2 |
++------------------------+
+| a                      |
+| alumnos                |
+| b                      |
+| detalle                |
+| detalle_materias       |
+| hijo                   |
+| hijos_2                |
+| horarios               |
+| maestro                |
+| materias               |
+| padre                  |
++------------------------+
+11 rows in set (0.00 sec)
+mysql-sql> select * from a;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | C      |
+|  4 | D      |
++----+--------+
+4 rows in set (0.07 sec)
+mysql-sql> select * from b;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | X      |
+|  2 | Y      |
+|  3 | Z      |
+|  4 | A      |
+|  5 | B      |
++----+--------+
+5 rows in set (0.00 sec)
+mysql-sql> select * from A inner join B on A.nombre = B.nombre;
++----+--------+----+--------+
+| id | nombre | id | nombre |
++----+--------+----+--------+
+|  1 | A      |  4 | A      |
+|  2 | B      |  5 | B      |
++----+--------+----+--------+
+2 rows in set (0.00 sec)
+
+
+
+mysql-sql> select * from A left outer join B on A.nombre = B.nombre;
++----+--------+------+--------+
+| id | nombre | id   | nombre |
++----+--------+------+--------+
+|  1 | A      |    4 | A      |
+|  2 | B      |    5 | B      |
+|  3 | C      | null | null   |
+|  4 | D      | null | null   |
++----+--------+------+--------+
+4 rows in set (0.01 sec)
+mysql-sql> select * from A right outer join B on A.nombre = B.nombre;
++------+--------+----+--------+
+| id   | nombre | id | nombre |
++------+--------+----+--------+
+|    1 | A      |  4 | A      |
+|    2 | B      |  5 | B      |
+| null | null   |  1 | X      |
+| null | null   |  2 | Y      |
+| null | null   |  3 | Z      |
++------+--------+----+--------+
+5 rows in set (0.00 sec)
+mysql-sql>
+
+
+Full outer join no existe en sql
+
+mysql-sql> select * from A left outer join B on A.nombre = B.nombre where B.nomb
+re is null;
++----+--------+------+--------+
+| id | nombre | id   | nombre |
++----+--------+------+--------+
+|  3 | C      | null | null   |
+|  4 | D      | null | null   |
++----+--------+------+--------+
+2 rows in set (0.00 sec)
+mysql-sql> select * from A right outer join B on A.nombre = B.nombre where A.nom
+bre is null;
++------+--------+----+--------+
+| id   | nombre | id | nombre |
++------+--------+----+--------+
+| null | null   |  1 | X      |
+| null | null   |  2 | Y      |
+| null | null   |  3 | Z      |
++------+--------+----+--------+
+3 rows in set (0.00 sec)
+mysql-sql> select * from A union select * from B;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | C      |
+|  4 | D      |
+|  1 | X      |
+|  2 | Y      |
+|  3 | Z      |
+|  4 | A      |
+|  5 | B      |
++----+--------+
+9 rows in set (0.01 sec)
+mysql-sql> select * from A inner join B on A.nombre = B.nombre,
+       ... select * from A left outer join B on A.nombre = B.nombre where B.nomb
+re is null;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near 'sele
+ct * from A left outer join B on A.nombre = B.nombre where B.nombre is null' at
+line 2
+mysql-sql> select * from A right outer join B on A.nombre = B.nombre,
+       ... select * from A left outer join B on A.nombre = B.nombre where B.nomb
+re is null,
+       ... select * from A right outer join B on A.nombre = B.nombre where A.nom
+bre is null;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near 'sele
+ct * from A left outer join B on A.nombre = B.nombre where B.nombre is null,' at
+ line 2
+mysql-sql> select * from A inner join B on A.nombre = B.nombre
+       ... union all
+       ... select * from A left outer join B on A.nombre = B.nombre where B.nomb
+re is null
+       ... union all
+       ... select * from A right outer join B on A.nombre = B.nombre where A.nom
+bre is null;
++------+--------+------+--------+
+| id   | nombre | id   | nombre |
++------+--------+------+--------+
+|    1 | A      |    4 | A      |
+|    2 | B      |    5 | B      |
+|    3 | C      | null | null   |
+|    4 | D      | null | null   |
+| null | null   |    1 | X      |
+| null | null   |    2 | Y      |
+| null | null   |    3 | Z      |
++------+--------+------+--------+
+7 rows in set (0.00 sec)
+mysql-sql>
+
+
+listar ordenes
+	pero incliur el nombre
+	del cliente que las realizo.
+
+mysql-sql> \use mundo
+Schema set to `mundo`.
+mysql-sql> show tables;
++----------------------+
+| Tables_in_mundo      |
++----------------------+
+| categories           |
+| ciudadano            |
+| ciudades             |
+| comida_mundo         |
+| copia_paises         |
+| copia_paises_temp    |
+| customercustomerdemo |
+| customerdemographics |
+| customers            |
+| employees            |
+| employeeterritories  |
+| oceanos              |
+| orderdetails         |
+| orders               |
+| paises               |
+| paises_copia         |
+| products             |
+| region               |
+| shippers             |
+| suppliers            |
+| territories          |
+| viajero              |
++----------------------+
+22 rows in set (0.00 sec)
+mysql-sql> select A.orderid, B.contactname from orders A inner join customers B
+on A.customerid = B.customerid limit 10;
++---------+--------------+
+| orderid | contactname  |
++---------+--------------+
+|   10643 | Maria Anders |
+|   10692 | Maria Anders |
+|   10702 | Maria Anders |
+|   10835 | Maria Anders |
+|   10952 | Maria Anders |
+|   11011 | Maria Anders |
+|   10308 | Ana Trujillo |
+|   10625 | Ana Trujillo |
+|   10759 | Ana Trujillo |
+|   10926 | Ana Trujillo |
++---------+--------------+
+10 rows in set (0.03 sec)
+mysql-sql>
+mysql-sql> select A.orderid, B.contactname from orders A right outer join custom
+ers B on A.customerid = B.customerid where A.orderid is null limit 10;
++---------+----------------+
+| orderid | contactname    |
++---------+----------------+
+|    null | Diego Roel     |
+|    null | Marie Bertrand |
+|    null | Val2           |
+|    null | Valon Hoti     |
++---------+----------------+
+4 rows in set (0.00 sec)
+mysql-sql> select B.contactname from orders A right outer join customers B on A.
+customerid = B.customerid where A.customerid is null;
++----------------+
+| contactname    |
++----------------+
+| Diego Roel     |
+| Marie Bertrand |
+| Val2           |
+| Valon Hoti     |
++----------------+
+4 rows in set (0.00 sec)
+mysql-sql>
+mysql-sql> select A.orderid from orders A left outer join customers B on A.custo
+merid = B.customerid where B.customerid is null;
+Empty set (0.00 sec)
+
+Mostrar en la lista de detalles
+	nombre del producto
+	cantidad
+	precio
+inner join
+
+mysql-sql> select A.unitprice, A.quantity, B.productname from orderdetails A inn
+er join products B on A.productid = B.productid limit 10;
++-----------+----------+--------------+
+| unitprice | quantity | productname  |
++-----------+----------+--------------+
+|   31.2000 |       30 | Alice Mutton |
+|   31.2000 |       15 | Alice Mutton |
+|   31.2000 |       15 | Alice Mutton |
+|   31.2000 |       40 | Alice Mutton |
+|   31.2000 |        8 | Alice Mutton |
+|   31.2000 |       20 | Alice Mutton |
+|   31.2000 |       70 | Alice Mutton |
+|   31.2000 |       36 | Alice Mutton |
+|   31.2000 |        2 | Alice Mutton |
+|   31.2000 |       45 | Alice Mutton |
++-----------+----------+--------------+
+10 rows in set (0.00 sec)
+
+mysql-sql> select A.orderid, A.unitprice, A.quantity, B.productname from orderde
+tails A inner join products B on A.productid = B.productid limit 10;
++---------+-----------+----------+--------------+
+| orderid | unitprice | quantity | productname  |
++---------+-----------+----------+--------------+
+|   10265 |   31.2000 |       30 | Alice Mutton |
+|   10279 |   31.2000 |       15 | Alice Mutton |
+|   10294 |   31.2000 |       15 | Alice Mutton |
+|   10302 |   31.2000 |       40 | Alice Mutton |
+|   10319 |   31.2000 |        8 | Alice Mutton |
+|   10338 |   31.2000 |       20 | Alice Mutton |
+|   10339 |   31.2000 |       70 | Alice Mutton |
+|   10346 |   31.2000 |       36 | Alice Mutton |
+|   10415 |   31.2000 |        2 | Alice Mutton |
+|   10430 |   31.2000 |       45 | Alice Mutton |
++---------+-----------+----------+--------------+
+10 rows in set (0.00 sec)
+mysql-sql>
+
+Mostrar todos los productos que NO
+	tengan compras
+right outer
+
+mysql-sql> select B.productname from orderdetails A right outer join products B
+on A.productid = B.productid where A.orderid is null;
+Empty set (0.03 sec)
+mysql-sql>
+
+
+

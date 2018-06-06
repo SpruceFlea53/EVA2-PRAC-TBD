@@ -1,0 +1,205 @@
+Practicas de JOINS
+
+1.- crear un reporte con el numero de clientes que han realizado ordenes
+2.- crear un reporte con el numero de clientes que NO han realizado ordenes
+3.- crear un reporte con el numero de empleados que han realizado ordenes
+4.- crear un reporte con los productos que aparezcan en ordenes.
+5.- crear un reporte con los productos que NO aparezcan en ordenes. si no aparecen,
+ agregar uno ficticio y repetir el query
+6.- crear un reporte con el numero de empleados que NO han realizado ordenes.
+7.- crear un reporte con las categorias de productos de los cuales se han realizado ordenes.
+8.- crear un reporte con las categorias de productos de los cuales NO se han realizado ordenes.
+9.- crear un reporte con los productos descontinuados que aparezcan en ordenes
+10.- crear un reporte con los productos descontinuados que NO aparezcan en ordenes.
+11.- crear un reporte con el Nombre del Producto y el nombre de la Categoria a la que pertenece.
+12.- crear un reporte con todas las categorias cuyos productos tengan ventas(existan en
+las ordenes de compra).
+13.- crear un reporte que muestre la cantidad total de productos ordenados. Mostrar
+el nombre del producto y en una columna "TotalUnits" el total ordenado.
+	a.crear otro reporte con los 10 productos mas vendidos.
+	b.crear otro reporte con los 10 productos menos vendidos.
+14.- crear un reporte que muestre la cantidad total de productos ordenados por REGION
+(cada empleado tiene una region asignada). mostrar el nombre de la region y en una
+columna"TotalUnits" el total ordenado.
+15.- crear un reporte que muestre la cantidad total de productos ordenados por CIUDAD
+(cada cliente tiene una ciudad de origen). mostrar el nombre de la ciudad y en una
+columna "TotalUnits" el total ordenado.
+16.- crear un reporte que muestre la cantidad total de ventas (unidades) por CATEGORIA.
+mostrar el nombre de la categoria y en una columna "TotalUnits" el total ordenado.
+17.- crear un reporte que muestre la cantidad total de productos ordenados.
+mostrar el nombre del producto y en una columna "TotalUnits" el total ordenado.
+solo muestre los productos para los cuales la cantidad ordenada es menor que 200
+(investigar el uso de la clausula HAVING).
+18.- crear los siguientes reportes que muestren el total ($$$) de ventas de productos:
+	a. por cliente.
+	b. por empleado.
+	c. por region.
+	d. por categoria de producto.
+
+
+
+
+
+
+1.-
+mysql-sql> select count(distinct(contactname)) from customers A
+       ... left outer join orders B
+       ... on A.customerid = B.customerid where B.orderid is not null;
++------------------------------+
+| count(distinct(contactname)) |
++------------------------------+
+|                           89 |
++------------------------------+
+1 row in set (0.00 sec)
+mysql-sql>
+
+
+2.-
+
+mysql-sql> select count(*) from customers A
+       ... left outer join orders B
+       ... on A.customerid = B.customerid where B.orderid is null;
++----------+
+| count(*) |
++----------+
+|        4 |
++----------+
+1 row in set (0.13 sec)
+mysql-sql>
+
+3.-
+mysql-sql> select count(distinct(lastname)) from employees A
+       ... left outer join orders B
+       ... on A.employeeid = B.employeeid where B.orderid is not null;
++---------------------------+
+| count(distinct(lastname)) |
++---------------------------+
+|                         9 |
++---------------------------+
+
+
+4.-
+     
+mysql-sql> select productname from products where productid in (select  distinct
+ (productid) from orderdetails);
++----------------------------------+
+| productname                      |
++----------------------------------+
+| Alice Mutton                     |
+| Aniseed Syrup                    |
+| Boston Crab Meat                 |
+| Camembert Pierrot                |
+| Carnarvon Tigers                 |
+| Chai                             |
+| Chang                            |
+| Chartreuse verte                 |
+| Chef Anton's Cajun Seasoning     |
+| Chef Anton's Gumbo Mix           |
+| Chocolade                        |
+| Cte de Blaye                     |
+| Escargots de Bourgogne           |
+| Filo Mix                         |
+| Flotemysost                      |
+| Geitost                          |
+| Genen Shouyu                     |
+| Gnocchi di nonna Alice           |
+| Gorgonzola Telino                |
+| Grandma's Boysenberry Spread     |
+| Gravad lax                       |
+| Guaran Fantstica                 |
+| Gudbrandsdalsost                 |
+| Gula Malacca                     |
+| Gumbr Gummibrchen                |
+| Gustaf's Knckebrd                |
+| Ikura                            |
+| Inlagd Sill                      |
+| Ipoh Coffee                      |
+| Jack's New England Clam Chowder  |
+| Konbu                            |
+| Lakkalikri                       |
+| Laughing Lumberjack Lager        |
+| Longlife Tofu                    |
+| Louisiana Fiery Hot Pepper Sauce |
+| Louisiana Hot Spiced Okra        |
+| Manjimup Dried Apples            |
+| Mascarpone Fabioli               |
+| Maxilaku                         |
+| Mishi Kobe Niku                  |
+| Mozzarella di Giovanni           |
+| Nord-Ost Matjeshering            |
+| Northwoods Cranberry Sauce       |
+| NuNuCa Nu-Nougat-Creme           |
+| Original Frankfurter grne Soe    |
+| Outback Lager                    |
+| Pavlova                          |
+| Perth Pasties                    |
+| Pt chinois                       |
+| Queso Cabrales                   |
+| Queso Manchego La Pastora        |
+| Raclette Courdavault             |
+| Ravioli Angelo                   |
+| Rd Kaviar                        |
+| Rhnbru Klosterbier               |
+| Rogede sild                      |
+| Rssle Sauerkraut                 |
+| Sasquatch Ale                    |
+| Schoggi Schokolade               |
+| Scottish Longbreads              |
+| Singaporean Hokkien Fried Mee    |
+| Sir Rodney's Marmalade           |
+| Sir Rodney's Scones              |
+| Sirop d'rable                    |
+| Spegesild                        |
+| Steeleye Stout                   |
+| Tarte au sucre                   |
+| Teatime Chocolate Biscuits       |
+| Thringer Rostbratwurst           |
+| Tofu                             |
+| Tourtire                         |
+| Tunnbrd                          |
+| Uncle Bob's Organic Dried Pears  |
+| Valkoinen suklaa                 |
+| Vegie-spread                     |
+| Wimmers gute Semmelkndel         |
+| Zaanse koeken                    |
++----------------------------------+
+77 rows in set (0.01 sec)
+mysql-sql>
+
+5.-
+
+mysql-sql> select productname from products where productid in (select  distinct
+ (productid) from orders where productid is null);
+Empty set (0.00 sec)
+mysql-sql> desc products;
++-----------------+---------------+------+-----+---------+----------------+
+| Field           | Type          | Null | Key | Default | Extra          |
++-----------------+---------------+------+-----+---------+----------------+
+| ProductID       | int(11)       | NO   | PRI | null    | auto_increment |
+| ProductName     | varchar(40)   | NO   | MUL | null    |                |
+| SupplierID      | int(11)       | YES  | MUL | null    |                |
+| CategoryID      | int(11)       | YES  | MUL | null    |                |
+| QuantityPerUnit | varchar(20)   | YES  |     | null    |                |
+| UnitPrice       | decimal(10,4) | YES  |     | 0.0000  |                |
+| UnitsInStock    | smallint(2)   | YES  |     | 0       |                |
+| UnitsOnOrder    | smallint(2)   | YES  |     | 0       |                |
+| ReorderLevel    | smallint(2)   | YES  |     | 0       |                |
+| Discontinued    | bit(1)        | NO   |     | b'0'    |                |
++-----------------+---------------+------+-----+---------+----------------+
+10 rows in set (0.00 sec)
+mysql-sql> insert into products (productid, productname, discontinued) values (1
+2, "papas", b'0');
+ERROR: 1062 (23000): Duplicate entry '12' for key 'PRIMARY'
+mysql-sql> insert into products (productid, productname, discontinued) values (1
+5, "papas", b'0');
+ERROR: 1062 (23000): Duplicate entry '15' for key 'PRIMARY'
+mysql-sql> insert into products (productid, productname, discontinued) values (1
+555, "papas", b'0');
+Query OK, 1 row affected (0.08 sec)
+mysql-sql> select productname from products where productid in (select  distinct
+ (productid) from orders where productid is null);
+Empty set (0.00 sec)
+mysql-sql> select productname from products where productid in (select  distinct
+ (productid) from orderdetails where productid is null);
+Empty set (0.00 sec)
+mysql-sql>

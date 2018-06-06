@@ -1,0 +1,772 @@
+producto cartesiano
+A=(A,B,C)
+B=(X,Y,Z)
+
+A x B
+
+A
+ID	NOMBRE
+1	A
+2	B
+3	C
+4	D
+
+B
+ID	NOMBRE
+1	X
+2	Y
+3	Z
+
+
+union
+A U B = (A,B,C,D,X,Y,Z)
+
+union all 
+
+
+MySQL Shell 1.0.10
+
+Copyright (c) 2016, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+Currently in JavaScript mode. Use \sql to switch to SQL mode and execute queries
+.
+mysql-js> \sql
+Switching to SQL mode... Commands end with ;
+mysql-sql> \connect -c root@localhost
+Creating a Classic Session to 'root@localhost'
+Enter password: ****
+Your MySQL connection id is 3
+Server version: 5.7.20-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> \use evaluacion_2
+Schema set to `evaluacion_2`.
+mysql-sql> create table A(id int, nombre varchar(10));
+Query OK, 0 rows affected (0.43 sec)
+mysql-sql> create table B(id int, nombre varchar(10));
+Query OK, 0 rows affected (0.34 sec)
+mysql-sql> insert into A values(1,'A');
+Query OK, 1 row affected (0.07 sec)
+mysql-sql> insert into A values(2,'B');
+Query OK, 1 row affected (0.07 sec)
+mysql-sql> insert into A values(3,'C');
+Query OK, 1 row affected (0.17 sec)
+mysql-sql> insert into A values(4,'D');
+Query OK, 1 row affected (0.07 sec)
+mysql-sql> insert into B values(1,'X');
+Query OK, 1 row affected (0.11 sec)
+mysql-sql> insert into B values(2,'Y');
+Query OK, 1 row affected (0.07 sec)
+mysql-sql> insert into B values(3,'Z');
+Query OK, 1 row affected (0.07 sec)
+mysql-sql> select * from A;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | C      |
+|  4 | D      |
++----+--------+
+4 rows in set (0.00 sec)
+mysql-sql> select * from B;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | X      |
+|  2 | Y      |
+|  3 | Z      |
++----+--------+
+3 rows in set (0.00 sec)
+
+mysql-sql> select * from A,B
+       ... ;
++----+--------+----+--------+
+| id | nombre | id | nombre |
++----+--------+----+--------+
+|  1 | A      |  1 | X      |
+|  1 | A      |  2 | Y      |
+|  1 | A      |  3 | Z      |
+|  2 | B      |  1 | X      |
+|  2 | B      |  2 | Y      |
+|  2 | B      |  3 | Z      |
+|  3 | C      |  1 | X      |
+|  3 | C      |  2 | Y      |
+|  3 | C      |  3 | Z      |
+|  4 | D      |  1 | X      |
+|  4 | D      |  2 | Y      |
+|  4 | D      |  3 | Z      |
++----+--------+----+--------+
+12 rows in set (0.00 sec)
+mysql-sql> select A.nombre, B.nombre from A A, B B;
+
+12 rows in set (0.00 sec)
+mysql-sql> select X.nombre, Y.nombre from A X, B Y;
++--------+--------+
+| nombre | nombre |
++--------+--------+
+| A      | X      |
+| A      | Y      |
+| A      | Z      |
+| B      | X      |
+| B      | Y      |
+| B      | Z      |
+| C      | X      |
+| C      | Y      |
+| C      | Z      |
+| D      | X      |
+| D      | Y      |
+| D      | Z      |
++--------+--------+
+12 rows in set (0.00 sec)
+mysql-sql> \use mundo
+Schema set to `mundo`.
+mysql-sql> show tables;
++----------------------+
+| Tables_in_mundo      |
++----------------------+
+| categories           |
+| ciudadano            |
+| ciudades             |
+| comida_mundo         |
+| copia_paises         |
+| copia_paises_temp    |
+| customercustomerdemo |
+| customerdemographics |
+| customers            |
+| employees            |
+| employeeterritories  |
+| oceanos              |
+| orderdetails         |
+| orders               |
+| paises               |
+| paises_copia         |
+| products             |
+| region               |
+| shippers             |
+| suppliers            |
+| territories          |
+| viajero              |
++----------------------+
+22 rows in set (0.00 sec)
+mysql-sql> desc customers;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| CustomerID   | varchar(5)  | NO   | PRI | null    |       |
+| CompanyName  | varchar(40) | NO   | MUL | null    |       |
+| ContactName  | varchar(30) | YES  |     | null    |       |
+| ContactTitle | varchar(30) | YES  |     | null    |       |
+| Address      | varchar(60) | YES  |     | null    |       |
+| City         | varchar(15) | YES  | MUL | null    |       |
+| Region       | varchar(15) | YES  | MUL | null    |       |
+| PostalCode   | varchar(10) | YES  | MUL | null    |       |
+| Country      | varchar(15) | YES  |     | null    |       |
+| Phone        | varchar(24) | YES  |     | null    |       |
+| Fax          | varchar(24) | YES  |     | null    |       |
++--------------+-------------+------+-----+---------+-------+
+11 rows in set (0.03 sec)
+mysql-sql> desc employees;
++-----------------+--------------+------+-----+---------+----------------+
+| Field           | Type         | Null | Key | Default | Extra          |
++-----------------+--------------+------+-----+---------+----------------+
+| EmployeeID      | int(11)      | NO   | PRI | null    | auto_increment |
+| LastName        | varchar(20)  | NO   | MUL | null    |                |
+| FirstName       | varchar(10)  | NO   |     | null    |                |
+| Title           | varchar(30)  | YES  |     | null    |                |
+| TitleOfCourtesy | varchar(25)  | YES  |     | null    |                |
+| BirthDate       | datetime     | YES  |     | null    |                |
+| HireDate        | datetime     | YES  |     | null    |                |
+| Address         | varchar(60)  | YES  |     | null    |                |
+| City            | varchar(15)  | YES  |     | null    |                |
+| Region          | varchar(15)  | YES  |     | null    |                |
+| PostalCode      | varchar(10)  | YES  | MUL | null    |                |
+| Country         | varchar(15)  | YES  |     | null    |                |
+| HomePhone       | varchar(24)  | YES  |     | null    |                |
+| Extension       | varchar(4)   | YES  |     | null    |                |
+| Notes           | mediumtext   | NO   |     | null    |                |
+| ReportsTo       | int(11)      | YES  | MUL | null    |                |
+| PhotoPath       | varchar(255) | YES  |     | null    |                |
+| Salary          | float        | YES  |     | null    |                |
++-----------------+--------------+------+-----+---------+----------------+
+18 rows in set (0.05 sec)
+mysql-sql> select count(*) from customers;
++----------+
+| count(*) |
++----------+
+|       93 |
++----------+
+1 row in set (0.00 sec)
+mysql-sql> select count(*) from employees;
++----------+
+| count(*) |
++----------+
+|        9 |
++----------+
+1 row in set (0.00 sec)
+mysql-sql> desc customers;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| CustomerID   | varchar(5)  | NO   | PRI | null    |       |
+| CompanyName  | varchar(40) | NO   | MUL | null    |       |
+| ContactName  | varchar(30) | YES  |     | null    |       |
+| ContactTitle | varchar(30) | YES  |     | null    |       |
+| Address      | varchar(60) | YES  |     | null    |       |
+| City         | varchar(15) | YES  | MUL | null    |       |
+| Region       | varchar(15) | YES  | MUL | null    |       |
+| PostalCode   | varchar(10) | YES  | MUL | null    |       |
+| Country      | varchar(15) | YES  |     | null    |       |
+| Phone        | varchar(24) | YES  |     | null    |       |
+| Fax          | varchar(24) | YES  |     | null    |       |
++--------------+-------------+------+-----+---------+-------+
+11 rows in set (0.00 sec)
+mysql-sql> desc employees;
++-----------------+--------------+------+-----+---------+----------------+
+| Field           | Type         | Null | Key | Default | Extra          |
++-----------------+--------------+------+-----+---------+----------------+
+| EmployeeID      | int(11)      | NO   | PRI | null    | auto_increment |
+| LastName        | varchar(20)  | NO   | MUL | null    |                |
+| FirstName       | varchar(10)  | NO   |     | null    |                |
+| Title           | varchar(30)  | YES  |     | null    |                |
+| TitleOfCourtesy | varchar(25)  | YES  |     | null    |                |
+| BirthDate       | datetime     | YES  |     | null    |                |
+| HireDate        | datetime     | YES  |     | null    |                |
+| Address         | varchar(60)  | YES  |     | null    |                |
+| City            | varchar(15)  | YES  |     | null    |                |
+| Region          | varchar(15)  | YES  |     | null    |                |
+| PostalCode      | varchar(10)  | YES  | MUL | null    |                |
+| Country         | varchar(15)  | YES  |     | null    |                |
+| HomePhone       | varchar(24)  | YES  |     | null    |                |
+| Extension       | varchar(4)   | YES  |     | null    |                |
+| Notes           | mediumtext   | NO   |     | null    |                |
+| ReportsTo       | int(11)      | YES  | MUL | null    |                |
+| PhotoPath       | varchar(255) | YES  |     | null    |                |
+| Salary          | float        | YES  |     | null    |                |
++-----------------+--------------+------+-----+---------+----------------+
+18 rows in set (0.00 sec)
+mysql-sql> select A.contactname, A.city, B.firstname, B.city from customers A, e
+mployees B limit 30;
++----------------+------------+-----------+----------+
+| contactname    | city       | firstname | city     |
++----------------+------------+-----------+----------+
+| Maria Anders   | Berlin     | Nancy     | Seattle  |
+| Maria Anders   | Berlin     | Andrew    | Tacoma   |
+| Maria Anders   | Berlin     | Janet     | Kirkland |
+| Maria Anders   | Berlin     | Margaret  | Redmond  |
+| Maria Anders   | Berlin     | Steven    | London   |
+| Maria Anders   | Berlin     | Michael   | London   |
+| Maria Anders   | Berlin     | Robert    | London   |
+| Maria Anders   | Berlin     | Laura     | Seattle  |
+| Maria Anders   | Berlin     | Anne      | London   |
+| Ana Trujillo   | Mxico D.F. | Nancy     | Seattle  |
+| Ana Trujillo   | Mxico D.F. | Andrew    | Tacoma   |
+| Ana Trujillo   | Mxico D.F. | Janet     | Kirkland |
+| Ana Trujillo   | Mxico D.F. | Margaret  | Redmond  |
+| Ana Trujillo   | Mxico D.F. | Steven    | London   |
+| Ana Trujillo   | Mxico D.F. | Michael   | London   |
+| Ana Trujillo   | Mxico D.F. | Robert    | London   |
+| Ana Trujillo   | Mxico D.F. | Laura     | Seattle  |
+| Ana Trujillo   | Mxico D.F. | Anne      | London   |
+| Antonio Moreno | Mxico D.F. | Nancy     | Seattle  |
+| Antonio Moreno | Mxico D.F. | Andrew    | Tacoma   |
+| Antonio Moreno | Mxico D.F. | Janet     | Kirkland |
+| Antonio Moreno | Mxico D.F. | Margaret  | Redmond  |
+| Antonio Moreno | Mxico D.F. | Steven    | London   |
+| Antonio Moreno | Mxico D.F. | Michael   | London   |
+| Antonio Moreno | Mxico D.F. | Robert    | London   |
+| Antonio Moreno | Mxico D.F. | Laura     | Seattle  |
+| Antonio Moreno | Mxico D.F. | Anne      | London   |
+| Thomas Hardy   | London     | Nancy     | Seattle  |
+| Thomas Hardy   | London     | Andrew    | Tacoma   |
+| Thomas Hardy   | London     | Janet     | Kirkland |
++----------------+------------+-----------+----------+
+30 rows in set (0.00 sec)
+mysql-sql> select A.contactname, A.city, B.firstname, B.city from customers A, e
+mployees B
+       ... where A.city = B.city;
++-------------------+----------+-----------+----------+
+| contactname       | city     | firstname | city     |
++-------------------+----------+-----------+----------+
+| Karl Jablonski    | Seattle  | Nancy     | Seattle  |
+| Helvetius Nagy    | Kirkland | Janet     | Kirkland |
+| Thomas Hardy      | London   | Steven    | London   |
+| Victoria Ashworth | London   | Steven    | London   |
+| Elizabeth Brown   | London   | Steven    | London   |
+| Ann Devon         | London   | Steven    | London   |
+| Simon Crowther    | London   | Steven    | London   |
+| Hari Kumar        | London   | Steven    | London   |
+| Thomas Hardy      | London   | Michael   | London   |
+| Victoria Ashworth | London   | Michael   | London   |
+| Elizabeth Brown   | London   | Michael   | London   |
+| Ann Devon         | London   | Michael   | London   |
+| Simon Crowther    | London   | Michael   | London   |
+| Hari Kumar        | London   | Michael   | London   |
+| Thomas Hardy      | London   | Robert    | London   |
+| Victoria Ashworth | London   | Robert    | London   |
+| Elizabeth Brown   | London   | Robert    | London   |
+| Ann Devon         | London   | Robert    | London   |
+| Simon Crowther    | London   | Robert    | London   |
+| Hari Kumar        | London   | Robert    | London   |
+| Karl Jablonski    | Seattle  | Laura     | Seattle  |
+| Thomas Hardy      | London   | Anne      | London   |
+| Victoria Ashworth | London   | Anne      | London   |
+| Elizabeth Brown   | London   | Anne      | London   |
+| Ann Devon         | London   | Anne      | London   |
+| Simon Crowther    | London   | Anne      | London   |
+| Hari Kumar        | London   | Anne      | London   |
++-------------------+----------+-----------+----------+
+27 rows in set (0.01 sec)
+mysql-sql> select A.contactname, A.city, B.firstname, B.city from customers A, e
+mployees B
+       ... where A.city = B.city;
++-------------------+----------+-----------+----------+
+| contactname       | city     | firstname | city     |
++-------------------+----------+-----------+----------+
+| Karl Jablonski    | Seattle  | Nancy     | Seattle  |
+| Helvetius Nagy    | Kirkland | Janet     | Kirkland |
+| Thomas Hardy      | London   | Steven    | London   |
+| Victoria Ashworth | London   | Steven    | London   |
+| Elizabeth Brown   | London   | Steven    | London   |
+| Ann Devon         | London   | Steven    | London   |
+| Simon Crowther    | London   | Steven    | London   |
+| Hari Kumar        | London   | Steven    | London   |
+| Thomas Hardy      | London   | Michael   | London   |
+| Victoria Ashworth | London   | Michael   | London   |
+| Elizabeth Brown   | London   | Michael   | London   |
+| Ann Devon         | London   | Michael   | London   |
+| Simon Crowther    | London   | Michael   | London   |
+| Hari Kumar        | London   | Michael   | London   |
+| Thomas Hardy      | London   | Robert    | London   |
+| Victoria Ashworth | London   | Robert    | London   |
+| Elizabeth Brown   | London   | Robert    | London   |
+| Ann Devon         | London   | Robert    | London   |
+| Simon Crowther    | London   | Robert    | London   |
+| Hari Kumar        | London   | Robert    | London   |
+| Karl Jablonski    | Seattle  | Laura     | Seattle  |
+| Thomas Hardy      | London   | Anne      | London   |
+| Victoria Ashworth | London   | Anne      | London   |
+| Elizabeth Brown   | London   | Anne      | London   |
+| Ann Devon         | London   | Anne      | London   |
+| Simon Crowther    | London   | Anne      | London   |
+| Hari Kumar        | London   | Anne      | London   |
++-------------------+----------+-----------+----------+
+27 rows in set (0.00 sec)
+mysql-sql> select A.contactname, A.city, B.firstname, B.city from customers A, e
+mployees B
+       ... where A.city = B.city
+       ... order by A.city, A.contacname, B.firstname;
+ERROR: 1054 (42S22): Unknown column 'A.contacname' in 'order clause'
+mysql-sql> select A.contactname, A.city, B.firstname, B.city from customers A, e
+mployees B
+       ... where A.city = B.city
+       ... order by A.city, A.contacname, B.firstname;
+ERROR: 1054 (42S22): Unknown column 'A.contacname' in 'order clause'
+mysql-sql> select A.contactname, A.city, B.firstname, B.city from customers A, e
+mployees B
+       ... where A.city = B.city
+       ... order by A.city, A.contactname, B.firstname;
++-------------------+----------+-----------+----------+
+| contactname       | city     | firstname | city     |
++-------------------+----------+-----------+----------+
+| Helvetius Nagy    | Kirkland | Janet     | Kirkland |
+| Ann Devon         | London   | Anne      | London   |
+| Ann Devon         | London   | Michael   | London   |
+| Ann Devon         | London   | Robert    | London   |
+| Ann Devon         | London   | Steven    | London   |
+| Elizabeth Brown   | London   | Anne      | London   |
+| Elizabeth Brown   | London   | Michael   | London   |
+| Elizabeth Brown   | London   | Robert    | London   |
+| Elizabeth Brown   | London   | Steven    | London   |
+| Hari Kumar        | London   | Anne      | London   |
+| Hari Kumar        | London   | Michael   | London   |
+| Hari Kumar        | London   | Robert    | London   |
+| Hari Kumar        | London   | Steven    | London   |
+| Simon Crowther    | London   | Anne      | London   |
+| Simon Crowther    | London   | Michael   | London   |
+| Simon Crowther    | London   | Robert    | London   |
+| Simon Crowther    | London   | Steven    | London   |
+| Thomas Hardy      | London   | Anne      | London   |
+| Thomas Hardy      | London   | Michael   | London   |
+| Thomas Hardy      | London   | Robert    | London   |
+| Thomas Hardy      | London   | Steven    | London   |
+| Victoria Ashworth | London   | Anne      | London   |
+| Victoria Ashworth | London   | Michael   | London   |
+| Victoria Ashworth | London   | Robert    | London   |
+| Victoria Ashworth | London   | Steven    | London   |
+| Karl Jablonski    | Seattle  | Laura     | Seattle  |
+| Karl Jablonski    | Seattle  | Nancy     | Seattle  |
++-------------------+----------+-----------+----------+
+27 rows in set (0.00 sec)
+mysql-sql>
++--------+--------+
+| nombre | nombre |
++--------+--------+
+| A      | X      |
+| A      | Y      |
+| A      | Z      |
+| B      | X      |
+| B      | Y      |
+| B      | Z      |
+| C      | X      |
+| C      | Y      |
+| C      | Z      |
+| D      | X      |
+| D      | Y      |
+| D      | Z      |
++--------+--------+
+12 rows in set (0.00 sec)
+mysql-sql> select X.nombre, Y.nombre from A X, B Y;
++--------+--------+
+| nombre | nombre |
++--------+--------+
+| A      | X      |
+| A      | Y      |
+| A      | Z      |
+| B      | X      |
+| B      | Y      |
+| B      | Z      |
+| C      | X      |
+| C      | Y      |
+| C      | Z      |
+| D      | X      |
+| D      | Y      |
+| D      | Z      |
++--------+--------+
+12 rows in set (0.00 sec)
+mysql-sql>
+
+mysql-sql> \use evaluacion_2;
+MySQL Error (1049): Unknown database 'evaluacion_2;'
+mysql-sql> \use evaluacion_2
+Schema set to `evaluacion_2`.
+mysql-sql> select * from A;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | C      |
+|  4 | D      |
++----+--------+
+4 rows in set (0.00 sec)
+mysql-sql> select * from B;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | X      |
+|  2 | Y      |
+|  3 | Z      |
++----+--------+
+3 rows in set (0.00 sec)
+mysql-sql> (select * from A) union (select * from B);
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | C      |
+|  4 | D      |
+|  1 | X      |
+|  2 | Y      |
+|  3 | Z      |
++----+--------+
+7 rows in set (0.00 sec)
+mysql-sql> insert into A values(5,'A');
+Query OK, 1 row affected (0.09 sec)
+mysql-sql> (select * from A) union (select * from B);
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | C      |
+|  4 | D      |
+|  5 | A      |
+|  1 | X      |
+|  2 | Y      |
+|  3 | Z      |
++----+--------+
+8 rows in set (0.01 sec)
+mysql-sql> (select nombre from A) union (select nombre from B);
++--------+
+| nombre |
++--------+
+| A      |
+| B      |
+| C      |
+| D      |
+| X      |
+| Y      |
+| Z      |
++--------+
+7 rows in set (0.00 sec)
+mysql-sql> (select nombre from A) union all (select nombre from B);
++--------+
+| nombre |
++--------+
+| A      |
+| B      |
+| C      |
+| D      |
+| A      |
+| X      |
+| Y      |
+| Z      |
++--------+
+8 rows in set (0.00 sec)
+mysql-sql> \use mundo
+Schema set to `mundo`.
+mysql-sql> show tables;
++----------------------+
+| Tables_in_mundo      |
++----------------------+
+| categories           |
+| ciudadano            |
+| ciudades             |
+| comida_mundo         |
+| copia_paises         |
+| copia_paises_temp    |
+| customercustomerdemo |
+| customerdemographics |
+| customers            |
+| employees            |
+| employeeterritories  |
+| oceanos              |
+| orderdetails         |
+| orders               |
+| paises               |
+| paises_copia         |
+| products             |
+| region               |
+| shippers             |
+| suppliers            |
+| territories          |
+| viajero              |
++----------------------+
+22 rows in set (0.01 sec)
+
+mysql-sql> select distinct city from customers limit 10;
++--------------+
+| city         |
++--------------+
+| null         |
+| Aachen       |
+| Albuquerque  |
+| Anchorage    |
+| Barcelona    |
+| Barquisimeto |
+| Bergamo      |
+| Berlin       |
+| Bern         |
+| Boise        |
++--------------+
+10 rows in set (0.02 sec)
+mysql-sql> select distinct city from employees;
++----------+
+| city     |
++----------+
+| Seattle  |
+| Tacoma   |
+| Kirkland |
+| Redmond  |
+| London   |
++----------+
+5 rows in set (0.00 sec)
+mysql-sql> (select city from customers) union (select city from employees) order
+ by city;
++-----------------+
+| city            |
++-----------------+
+| null            |
+| Aachen          |
+| Albuquerque     |
+| Anchorage       |
+| Barcelona       |
+| Barquisimeto    |
+| Bergamo         |
+| Berlin          |
+| Bern            |
+| Boise           |
+| Brandenburg     |
+| Brcke           |
+| Bruxelles       |
+| Buenos Aires    |
+| Butte           |
+| Campinas        |
+| Caracas         |
+| Charleroi       |
+| Cork            |
+| Cowes           |
+| Cunewalde       |
+| Elgin           |
+| Eugene          |
+| Frankfurt a.M.  |
+| Genve           |
+| Graz            |
+| Helsinki        |
+| I. de Margarita |
+| Kirkland        |
+| Kln             |
+| Kobenhavn       |
+| Lander          |
+| Leipzig         |
+| Lille           |
+| Lisboa          |
+| London          |
+| Lule            |
+| Lyon            |
+| Madrid          |
+| Mannheim        |
+| Marseille       |
+| Mnchen          |
+| Mnster          |
+| Montral         |
+| Mxico D.F.      |
+| Nantes          |
+| Oulu            |
+| Paris           |
+| Portland        |
+| Redmond         |
+| Reggio Emilia   |
+| Reims           |
+| Resende         |
+| rhus            |
+| Rio de Janeiro  |
+| Salzburg        |
+| San Cristbal    |
+| San Francisco   |
+| Sao Paulo       |
+| Seattle         |
+| Sevilla         |
+| Stavern         |
+| Strasbourg      |
+| Stuttgart       |
+| Tacoma          |
+| Torino          |
+| Toulouse        |
+| Tsawassen       |
+| Vancouver       |
+| Versailles      |
+| Walla Walla     |
+| Warszawa        |
++-----------------+
+72 rows in set (0.00 sec)
+
+mysql-sql> (select city from customers order by city asc) union (select city fro
+m employees order by city asc);
++-----------------+
+| city            |
++-----------------+
+| null            |
+| Aachen          |
+| Albuquerque     |
+| Anchorage       |
+| Barcelona       |
+| Barquisimeto    |
+| Bergamo         |
+| Berlin          |
+| Bern            |
+| Boise           |
+| Brandenburg     |
+| Brcke           |
+| Bruxelles       |
+| Buenos Aires    |
+| Butte           |
+| Campinas        |
+| Caracas         |
+| Charleroi       |
+| Cork            |
+| Cowes           |
+| Cunewalde       |
+| Elgin           |
+| Eugene          |
+| Frankfurt a.M.  |
+| Genve           |
+| Graz            |
+| Helsinki        |
+| I. de Margarita |
+| Kirkland        |
+| Kln             |
+| Kobenhavn       |
+| Lander          |
+| Leipzig         |
+| Lille           |
+| Lisboa          |
+| London          |
+| Lule            |
+| Lyon            |
+| Madrid          |
+| Mannheim        |
+| Marseille       |
+| Mnchen          |
+| Mnster          |
+| Montral         |
+| Mxico D.F.      |
+| Nantes          |
+| Oulu            |
+| Paris           |
+| Portland        |
+| Reggio Emilia   |
+| Reims           |
+| Resende         |
+| rhus            |
+| Rio de Janeiro  |
+| Salzburg        |
+| San Cristbal    |
+| San Francisco   |
+| Sao Paulo       |
+| Seattle         |
+| Sevilla         |
+| Stavern         |
+| Strasbourg      |
+| Stuttgart       |
+| Torino          |
+| Toulouse        |
+| Tsawassen       |
+| Vancouver       |
+| Versailles      |
+| Walla Walla     |
+| Warszawa        |
+| Tacoma          |
+| Redmond         |
++-----------------+
+72 rows in set (0.00 sec)
+mysql-sql> (select city from customers limit 5) union (select city from employee
+s order by city asc);
++-------------+
+| city        |
++-------------+
+| null        |
+| Aachen      |
+| Albuquerque |
+| Anchorage   |
+| Seattle     |
+| Tacoma      |
+| Kirkland    |
+| Redmond     |
+| London      |
++-------------+
+9 rows in set (0.00 sec)
+mysql-sql> (select city from customers limit 5) union (select city from employee
+s);
++-------------+
+| city        |
++-------------+
+| null        |
+| Aachen      |
+| Albuquerque |
+| Anchorage   |
+| Seattle     |
+| Tacoma      |
+| Kirkland    |
+| Redmond     |
+| London      |
++-------------+
+9 rows in set (0.00 sec)
+mysql-sql>

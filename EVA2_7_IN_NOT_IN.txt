@@ -1,0 +1,507 @@
+customers C
+orders B
+orderdetails A
+products D
+
+A orderdetails
+B orders
+C customers
+D products
+
+C.contactname, A.orderid, D.productname, A.quantity, A.unitprice
+
+
+MySQL Shell 1.0.10
+
+Copyright (c) 2016, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+Currently in JavaScript mode. Use \sql to switch to SQL mode and execute queries
+.
+mysql-js> \sql
+Switching to SQL mode... Commands end with ;
+mysql-sql> \connect -c root@localhost
+Creating a Classic Session to 'root@localhost'
+Enter password: ****
+Your MySQL connection id is 3
+Server version: 5.7.20-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> \use mundo
+Schema set to `mundo`.
+mysql-sql> show tables;
++----------------------+
+| Tables_in_mundo      |
++----------------------+
+| categories           |
+| ciudadano            |
+| ciudades             |
+| comida_mundo         |
+| copia_paises         |
+| copia_paises_temp    |
+| customercustomerdemo |
+| customerdemographics |
+| customers            |
+| employees            |
+| employeeterritories  |
+| oceanos              |
+| orderdetails         |
+| orders               |
+| paises               |
+| paises_copia         |
+| products             |
+| region               |
+| shippers             |
+| suppliers            |
+| territories          |
+| viajero              |
++----------------------+
+22 rows in set (0.00 sec)
+mysql-sql> desc customers;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| CustomerID   | varchar(5)  | NO   | PRI | null    |       |
+| CompanyName  | varchar(40) | NO   | MUL | null    |       |
+| ContactName  | varchar(30) | YES  |     | null    |       |
+| ContactTitle | varchar(30) | YES  |     | null    |       |
+| Address      | varchar(60) | YES  |     | null    |       |
+| City         | varchar(15) | YES  | MUL | null    |       |
+| Region       | varchar(15) | YES  | MUL | null    |       |
+| PostalCode   | varchar(10) | YES  | MUL | null    |       |
+| Country      | varchar(15) | YES  |     | null    |       |
+| Phone        | varchar(24) | YES  |     | null    |       |
+| Fax          | varchar(24) | YES  |     | null    |       |
++--------------+-------------+------+-----+---------+-------+
+11 rows in set (0.01 sec)
+mysql-sql> desc irders;
+ERROR: 1146 (42S02): Table 'mundo.irders' doesn't exist
+mysql-sql> desc orders;
++----------------+---------------+------+-----+---------+----------------+
+| Field          | Type          | Null | Key | Default | Extra          |
++----------------+---------------+------+-----+---------+----------------+
+| OrderID        | int(11)       | NO   | PRI | null    | auto_increment |
+| CustomerID     | varchar(5)    | YES  | MUL | null    |                |
+| EmployeeID     | int(11)       | YES  | MUL | null    |                |
+| OrderDate      | datetime      | YES  | MUL | null    |                |
+| RequiredDate   | datetime      | YES  |     | null    |                |
+| ShippedDate    | datetime      | YES  | MUL | null    |                |
+| ShipVia        | int(11)       | YES  | MUL | null    |                |
+| Freight        | decimal(10,4) | YES  |     | 0.0000  |                |
+| ShipName       | varchar(40)   | YES  |     | null    |                |
+| ShipAddress    | varchar(60)   | YES  |     | null    |                |
+| ShipCity       | varchar(15)   | YES  |     | null    |                |
+| ShipRegion     | varchar(15)   | YES  |     | null    |                |
+| ShipPostalCode | varchar(10)   | YES  | MUL | null    |                |
+| ShipCountry    | varchar(15)   | YES  |     | null    |                |
++----------------+---------------+------+-----+---------+----------------+
+14 rows in set (0.01 sec)
+mysql-sql> desc customers;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| CustomerID   | varchar(5)  | NO   | PRI | null    |       |
+| CompanyName  | varchar(40) | NO   | MUL | null    |       |
+| ContactName  | varchar(30) | YES  |     | null    |       |
+| ContactTitle | varchar(30) | YES  |     | null    |       |
+| Address      | varchar(60) | YES  |     | null    |       |
+| City         | varchar(15) | YES  | MUL | null    |       |
+| Region       | varchar(15) | YES  | MUL | null    |       |
+| PostalCode   | varchar(10) | YES  | MUL | null    |       |
+| Country      | varchar(15) | YES  |     | null    |       |
+| Phone        | varchar(24) | YES  |     | null    |       |
+| Fax          | varchar(24) | YES  |     | null    |       |
++--------------+-------------+------+-----+---------+-------+
+11 rows in set (0.00 sec)
+
+mysql-sql> select C.contactname, A.orderid, D.productname, A.quantity, A.unitpri
+ce from orderdetails A
+       ... inner join orders B on A.orderid = B.orderid
+       ... inner join products D on A.productid = D.productid
+       ... inner join customers C on C.customerid = B.customerid
+       ... limit 10;
++--------------+---------+-------------------------------+----------+-----------
++
+| contactname  | orderid | productname                   | quantity | unitprice
+|
++--------------+---------+-------------------------------+----------+-----------
++
+| Maria Anders |   10643 | Rssle Sauerkraut              |       15 |   45.6000
+|
+| Maria Anders |   10643 | Chartreuse verte              |       21 |   18.0000
+|
+| Maria Anders |   10643 | Spegesild                     |        2 |   12.0000
+|
+| Maria Anders |   10692 | Vegie-spread                  |       20 |   43.9000
+|
+| Maria Anders |   10702 | Aniseed Syrup                 |        6 |   10.0000
+|
+| Maria Anders |   10702 | Lakkalikri                    |       15 |   18.0000
+|
+| Maria Anders |   10835 | Raclette Courdavault          |       15 |   55.0000
+|
+| Maria Anders |   10835 | Original Frankfurter grne Soe |        2 |   13.0000
+|
+| Maria Anders |   10952 | Grandma's Boysenberry Spread  |       16 |   25.0000
+|
+| Maria Anders |   10952 | Rssle Sauerkraut              |        2 |   45.6000
+|
++--------------+---------+-------------------------------+----------+-----------
++
+10 rows in set (0.05 sec)
+
+mysql-sql> select count (*) orderdetails;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near '*) o
+rderdetails' at line 1
+mysql-sql> select count (*) from orderdetails;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near '*) f
+rom orderdetails' at line 1
+mysql-sql> select count(*) from orderdetails;
++----------+
+| count(*) |
++----------+
+|     2155 |
++----------+
+1 row in set (0.00 sec)
+mysql-sql> select A.contactname from customers A
+       ... inner join orders B on A.customerid = B.customerid limit 10;
++--------------+
+| contactname  |
++--------------+
+| Maria Anders |
+| Maria Anders |
+| Maria Anders |
+| Maria Anders |
+| Maria Anders |
+| Maria Anders |
+| Ana Trujillo |
+| Ana Trujillo |
+| Ana Trujillo |
+| Ana Trujillo |
++--------------+
+10 rows in set (0.00 sec)
+mysql-sql> select A.contactname from customers A
+       ... inner join orders B on A.customerid = B.customerid limit 10
+       ... ;
++--------------+
+| contactname  |
++--------------+
+| Maria Anders |
+| Maria Anders |
+| Maria Anders |
+| Maria Anders |
+| Maria Anders |
+| Maria Anders |
+| Ana Trujillo |
+| Ana Trujillo |
+| Ana Trujillo |
+| Ana Trujillo |
++--------------+
+10 rows in set (0.00 sec)
+mysql-sql> select distinct(A.contactname) from customers A
+       ... inner join orders B on A.customerid = B.customerid limit 10;
++--------------------+
+| contactname        |
++--------------------+
+| Maria Anders       |
+| Ana Trujillo       |
+| Antonio Moreno     |
+| Thomas Hardy       |
+| Christina Berglund |
+| Hanna Moos         |
+| Frdrique Citeaux   |
+| Martn Sommer       |
+| Laurence Lebihan   |
+| Elizabeth Lincoln  |
++--------------------+
+10 rows in set (0.00 sec)
+mysql-sql>
+
+
+obtener los datos del cliente
+obtener todos los id de los clientes en orders
+
+mysql-sql> select contactname from customers where customerid in (
+       ... select distinct(customerid) from orders) limit 10;
++--------------------+
+| contactname        |
++--------------------+
+| Maria Anders       |
+| Ana Trujillo       |
+| Antonio Moreno     |
+| Thomas Hardy       |
+| Christina Berglund |
+| Hanna Moos         |
+| Frdrique Citeaux   |
+| Martn Sommer       |
+| Laurence Lebihan   |
+| Elizabeth Lincoln  |
++--------------------+
+10 rows in set (0.00 sec)
+mysql-sql>
+
+
+TODOS los clientes sin orden
+from	join
+left	right
+tabla1	tabla2
+orders	customers
+
+mysql-sql> select B.contactname from orders A
+       ... right outer join customers B on A.customerid = B.customerid where A.c
+ustomerid is null;
++----------------+
+| contactname    |
++----------------+
+| Diego Roel     |
+| Marie Bertrand |
+| Val2           |
+| Valon Hoti     |
++----------------+
+4 rows in set (0.01 sec)
+mysql-sql> select contactname from customers where customerid not in (select dis
+tinct (customerid) from orders);
++----------------+
+| contactname    |
++----------------+
+| Diego Roel     |
+| Marie Bertrand |
+| Val2           |
+| Valon Hoti     |
++----------------+
+4 rows in set (0.00 sec)
+mysql-sql>
+
+
+products
+
+join
+
+in - not in(buscar todo lo que este en(tabla))
+
+todos los productos sin compras
+
+mysql-sql> desc orderdetails;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| OrderID   | int(11)       | NO   | PRI | null    |       |
+| ProductID | int(11)       | NO   | PRI | null    |       |
+| UnitPrice | decimal(10,4) | NO   |     | 0.0000  |       |
+| Quantity  | smallint(2)   | NO   |     | 1       |       |
+| Discount  | double(8,0)   | NO   |     | 0       |       |
++-----------+---------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+mysql-sql> desc products;
++-----------------+---------------+------+-----+---------+----------------+
+| Field           | Type          | Null | Key | Default | Extra          |
++-----------------+---------------+------+-----+---------+----------------+
+| ProductID       | int(11)       | NO   | PRI | null    | auto_increment |
+| ProductName     | varchar(40)   | NO   | MUL | null    |                |
+| SupplierID      | int(11)       | YES  | MUL | null    |                |
+| CategoryID      | int(11)       | YES  | MUL | null    |                |
+| QuantityPerUnit | varchar(20)   | YES  |     | null    |                |
+| UnitPrice       | decimal(10,4) | YES  |     | 0.0000  |                |
+| UnitsInStock    | smallint(2)   | YES  |     | 0       |                |
+| UnitsOnOrder    | smallint(2)   | YES  |     | 0       |                |
+| ReorderLevel    | smallint(2)   | YES  |     | 0       |                |
+| Discontinued    | bit(1)        | NO   |     | b'0'    |                |
++-----------------+---------------+------+-----+---------+----------------+
+10 rows in set (0.00 sec)
+mysql-sql> select productname from products where productid not in (select disti
+nct (productid) from orderdetails limit 10;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near '' at
+ line 1
+mysql-sql> select productname from products where productid not in (select disti
+nct (productid) from orderdetails) limit 10;
+Empty set (0.00 sec)
+mysql-sql>
+
+todos los productos con compras
+
+mysql-sql> select productname from products where productid in (
+       ... select distinct (productid) from orderdetails) limit 10;
++------------------------------+
+| productname                  |
++------------------------------+
+| Alice Mutton                 |
+| Aniseed Syrup                |
+| Boston Crab Meat             |
+| Camembert Pierrot            |
+| Carnarvon Tigers             |
+| Chai                         |
+| Chang                        |
+| Chartreuse verte             |
+| Chef Anton's Cajun Seasoning |
+| Chef Anton's Gumbo Mix       |
++------------------------------+
+10 rows in set (0.00 sec)
+mysql-sql>
+
+Todos los empleados y sus clientes
+
++-----------------+--------------+------+-----+---------+----------------+
+| Field           | Type         | Null | Key | Default | Extra          |
++-----------------+--------------+------+-----+---------+----------------+
+| EmployeeID      | int(11)      | NO   | PRI | null    | auto_increment |
+| LastName        | varchar(20)  | NO   | MUL | null    |                |
+| FirstName       | varchar(10)  | NO   |     | null    |                |
+| Title           | varchar(30)  | YES  |     | null    |                |
+| TitleOfCourtesy | varchar(25)  | YES  |     | null    |                |
+| BirthDate       | datetime     | YES  |     | null    |                |
+| HireDate        | datetime     | YES  |     | null    |                |
+| Address         | varchar(60)  | YES  |     | null    |                |
+| City            | varchar(15)  | YES  |     | null    |                |
+| Region          | varchar(15)  | YES  |     | null    |                |
+| PostalCode      | varchar(10)  | YES  | MUL | null    |                |
+| Country         | varchar(15)  | YES  |     | null    |                |
+| HomePhone       | varchar(24)  | YES  |     | null    |                |
+| Extension       | varchar(4)   | YES  |     | null    |                |
+| Notes           | mediumtext   | NO   |     | null    |                |
+| ReportsTo       | int(11)      | YES  | MUL | null    |                |
+| PhotoPath       | varchar(255) | YES  |     | null    |                |
+| Salary          | float        | YES  |     | null    |                |
++-----------------+--------------+------+-----+---------+----------------+
+18 rows in set (0.05 sec)
+mysql-sql> desc orders;
++----------------+---------------+------+-----+---------+----------------+
+| Field          | Type          | Null | Key | Default | Extra          |
++----------------+---------------+------+-----+---------+----------------+
+| OrderID        | int(11)       | NO   | PRI | null    | auto_increment |
+| CustomerID     | varchar(5)    | YES  | MUL | null    |                |
+| EmployeeID     | int(11)       | YES  | MUL | null    |                |
+| OrderDate      | datetime      | YES  | MUL | null    |                |
+| RequiredDate   | datetime      | YES  |     | null    |                |
+| ShippedDate    | datetime      | YES  | MUL | null    |                |
+| ShipVia        | int(11)       | YES  | MUL | null    |                |
+| Freight        | decimal(10,4) | YES  |     | 0.0000  |                |
+| ShipName       | varchar(40)   | YES  |     | null    |                |
+| ShipAddress    | varchar(60)   | YES  |     | null    |                |
+| ShipCity       | varchar(15)   | YES  |     | null    |                |
+| ShipRegion     | varchar(15)   | YES  |     | null    |                |
+| ShipPostalCode | varchar(10)   | YES  | MUL | null    |                |
+| ShipCountry    | varchar(15)   | YES  |     | null    |                |
++----------------+---------------+------+-----+---------+----------------+
+14 rows in set (0.00 sec)
+mysql-sql> desc customers;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| CustomerID   | varchar(5)  | NO   | PRI | null    |       |
+| CompanyName  | varchar(40) | NO   | MUL | null    |       |
+| ContactName  | varchar(30) | YES  |     | null    |       |
+| ContactTitle | varchar(30) | YES  |     | null    |       |
+| Address      | varchar(60) | YES  |     | null    |       |
+| City         | varchar(15) | YES  | MUL | null    |       |
+| Region       | varchar(15) | YES  | MUL | null    |       |
+| PostalCode   | varchar(10) | YES  | MUL | null    |       |
+| Country      | varchar(15) | YES  |     | null    |       |
+| Phone        | varchar(24) | YES  |     | null    |       |
+| Fax          | varchar(24) | YES  |     | null    |       |
++--------------+-------------+------+-----+---------+-------+
+11 rows in set (0.00 sec)
+
+mysql-sql> select A.firstname, A.employeeid from employees
+       ... inner join orders B limit 10;
+ERROR: 1054 (42S22): Unknown column 'A.firstname' in 'field list'
+mysql-sql> select A.firstname, A.employeeid from employees A
+       ... inner join orders B on A.employeeid = B.employeeid
+       ... inner join limit 10;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near 'limi
+t 10' at line 3
+mysql-sql> select A.firstname, A.employeeid, C.contactname from employees A
+       ... inner join orders B on A.employeeid = B.employeeid
+       ... inner join customers C on C.customerid = B.customerid limit 10;
++-----------+------------+----------------------+
+| firstname | employeeid | contactname          |
++-----------+------------+----------------------+
+| Nancy     |          1 | Roland Mendel        |
+| Nancy     |          1 | Pirkko Koskitalo     |
+| Nancy     |          1 | Giovanni Rovelli     |
+| Nancy     |          1 | Horst Kloss          |
+| Nancy     |          1 | Anabela Domingues    |
+| Nancy     |          1 | Miguel Angel Paolino |
+| Nancy     |          1 | Miguel Angel Paolino |
+| Nancy     |          1 | Alejandra Camino     |
+| Nancy     |          1 | Janine Labrune       |
+| Nancy     |          1 | Paula Wilson         |
++-----------+------------+----------------------+
+10 rows in set (0.03 sec)
+mysql-sql> select A.firstname, A.employeeid, C.contactname from employees A
+       ... inner join orders B on A.employeeid = B.employeeid
+       ... inner join customers C on C.customerid = B.customerid limit 20;
++-----------+------------+-------------------------+
+| firstname | employeeid | contactname             |
++-----------+------------+-------------------------+
+| Nancy     |          1 | Roland Mendel           |
+| Nancy     |          1 | Pirkko Koskitalo        |
+| Nancy     |          1 | Giovanni Rovelli        |
+| Nancy     |          1 | Horst Kloss             |
+| Nancy     |          1 | Anabela Domingues       |
+| Nancy     |          1 | Miguel Angel Paolino    |
+| Nancy     |          1 | Miguel Angel Paolino    |
+| Nancy     |          1 | Alejandra Camino        |
+| Nancy     |          1 | Janine Labrune          |
+| Nancy     |          1 | Paula Wilson            |
+| Nancy     |          1 | Paula Wilson            |
+| Nancy     |          1 | Philip Cramer           |
+| Nancy     |          1 | Laurence Lebihan        |
+| Nancy     |          1 | Roland Mendel           |
+| Nancy     |          1 | Carlos Gonzlez          |
+| Nancy     |          1 | Horst Kloss             |
+| Nancy     |          1 | Ann Devon               |
+| Nancy     |          1 | Annette Roulet          |
+| Nancy     |          1 | Zbyszek Piestrzeniewicz |
+| Nancy     |          1 | Jean Fresnire           |
++-----------+------------+-------------------------+
+20 rows in set (0.00 sec)
+mysql-sql> select A.firstname, A.lastname, C.contactname from employees A
+       ... inner join orders B on A.employeeid = B.employeeid
+       ... inner join customers C on C.customerid = B.customerid limit 30;
++-----------+----------+-------------------------+
+| firstname | lastname | contactname             |
++-----------+----------+-------------------------+
+| Nancy     | Davolio  | Roland Mendel           |
+| Nancy     | Davolio  | Pirkko Koskitalo        |
+| Nancy     | Davolio  | Giovanni Rovelli        |
+| Nancy     | Davolio  | Horst Kloss             |
+| Nancy     | Davolio  | Anabela Domingues       |
+| Nancy     | Davolio  | Miguel Angel Paolino    |
+| Nancy     | Davolio  | Miguel Angel Paolino    |
+| Nancy     | Davolio  | Alejandra Camino        |
+| Nancy     | Davolio  | Janine Labrune          |
+| Nancy     | Davolio  | Paula Wilson            |
+| Nancy     | Davolio  | Paula Wilson            |
+| Nancy     | Davolio  | Philip Cramer           |
+| Nancy     | Davolio  | Laurence Lebihan        |
+| Nancy     | Davolio  | Roland Mendel           |
+| Nancy     | Davolio  | Carlos Gonzlez          |
+| Nancy     | Davolio  | Horst Kloss             |
+| Nancy     | Davolio  | Ann Devon               |
+| Nancy     | Davolio  | Annette Roulet          |
+| Nancy     | Davolio  | Zbyszek Piestrzeniewicz |
+| Nancy     | Davolio  | Jean Fresnire           |
+| Nancy     | Davolio  | Hari Kumar              |
+| Nancy     | Davolio  | Art Braunschweiger      |
+| Nancy     | Davolio  | Jonas Bergulfsen        |
+| Nancy     | Davolio  | Jose Pavarotti          |
+| Nancy     | Davolio  | Yoshi Latimer           |
+| Nancy     | Davolio  | Peter Franken           |
+| Nancy     | Davolio  | Ann Devon               |
+| Nancy     | Davolio  | Paula Wilson            |
+| Nancy     | Davolio  | Felipe Izquierdo        |
+| Nancy     | Davolio  | Thomas Hardy            |
++-----------+----------+-------------------------+
+30 rows in set (0.00 sec)
+mysql-sql>
+
+inner ---> tabla con coincidencias en ambas
+lef, right ---> todos los registros de una tabla, pero no de la otra.

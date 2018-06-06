@@ -1,0 +1,197 @@
+Listado pacientes que vivan en mexico
+
+
+mysql-sql> select A.nombre, A.apellido_pat, B.calle, B.codigo_postal, B.ciudad,
+B.pais from pacientes A
+       ... inner join direcciones_pacientes C on A.paciente_id = C.paciente_id
+       ... inner join direcciones B on B.direccion_id = C.direccion_id where pai
+s like '%Mexico';
++-----------+--------------+------------------------------+---------------+-----
+--------+--------+
+| nombre    | apellido_pat | calle                        | codigo_postal | ciud
+ad      | pais   |
++-----------+--------------+------------------------------+---------------+-----
+--------+--------+
+| Bezalel   | Simmel       | Avda. de la Constitucin 2222 | 71760         | Mexi
+co D.F. | Mexico |
+| Parto     | Bamford      | Mataderos 2312               | 37179         | Mexi
+co D.F. | Mexico |
+| Eberhardt | Terkki       | Sierras de Granada 9993      | 45792         | Mexi
+co D.F. | Mexico |
+| Berhard   | McFarlin     | Calle Dr. Jorge Cash 321     | 19460         | Mexi
+co D.F. | Mexico |
++-----------+--------------+------------------------------+---------------+-----
+--------+--------+
+4 rows in set (0.00 sec)
+mysql-sql>
+
+Listado empleados que vivan en brazil
+
+mysql-sql> select A.nombre, A.apellido_pat, B.calle, B.codigo_postal, B.ciudad,
+B.pais from empleados A
+       ... inner join direcciones_empleados C on A.empleados_id = C.empleado_id
+       ... inner join direcciones B on B.direccion_id = C.direccion_id where pai
+s like '%Brazil';
++---------+--------------+---------------------+---------------+-----------+----
+----+
+| nombre  | apellido_pat | calle               | codigo_postal | ciudad    | pai
+s   |
++---------+--------------+---------------------+---------------+-----------+----
+----+
+| Shir    | McClurg      | Av. dos Lusadas, 23 | 84473         | Sao Paulo | Bra
+zil |
+| Kshitij | Gils         | Rua Ors, 92         | 16799         | Sao Paulo | Bra
+zil |
++---------+--------------+---------------------+---------------+-----------+----
+----+
+2 rows in set (0.00 sec)
+mysql-sql>
+
+Listado de pacientes internados en el primer piso del hospital
+
+mysql-sql> select A.nombre, A.apellido_pat, B.numero_cuarto from pacientes A
+       ... inner join cuartos B on A.paciente_id = B.paciente_id where numero_cu
+arto like '1%%';
++------------+--------------+---------------+
+| nombre     | apellido_pat | numero_cuarto |
++------------+--------------+---------------+
+| Georgi     | Facello      |           121 |
+| Bezalel    | Simmel       |           190 |
+| Parto      | Bamford      |           108 |
+| Chirstian  | Koblick      |           179 |
+| Kyoichi    | Maliniak     |           158 |
+| Anneke     | Preusig      |           183 |
+| Tzvetan    | Zielinski    |           142 |
+| Saniya     | Kalloufi     |           108 |
+| Sumant     | Peac         |           100 |
+| Duangkaew  | Piveteau     |           109 |
+| Mary       | Sluis        |           116 |
+| Patricio   | Bridglnad    |           182 |
+| Eberhardt  | Terkki       |           180 |
+| Berni      | Genin        |           188 |
+| Guoxiang   | Nooteboom    |           173 |
+| Kazuhito   | Cappelleti   |           176 |
+| Cristinel  | Bouloucos    |           122 |
+| Kazuhide   | Peha         |           155 |
+| Lillian    | Haddadi      |           181 |
+| Mayuko     | Warwick      |           178 |
+| Ramzi      | Erde         |           139 |
+| Shahaf     | Famili       |           119 |
+| Bojan      | Montemayor   |           193 |
+| Suzette    | Pettey       |           153 |
+| Prasadram  | Heyers       |           168 |
+| Yongqiao   | Berztiss     |           115 |
+| Divier     | Reistad      |           140 |
+| Domenick   | Tempesti     |           170 |
+| Otmar      | Herbst       |           153 |
+| Elvis      | Demeyer      |           177 |
+| Karsten    | Joslin       |           101 |
+| Jeong      | Reistad      |           118 |
+| Arif       | Merlo        |           120 |
+| Bader      | Swan         |           156 |
+| Alain      | Chappelet    |           174 |
+| Adamantios | Portugali    |           156 |
++------------+--------------+---------------+
+36 rows in set (0.00 sec)
+mysql-sql>
+
+Listado de pacientes por cualquier fatiga
+
+mysql-sql> select A.nombre, A.apellido_pat, A.genero from pacientes A
+       ... inner join registro_pacientes B on A.paciente_id = B.paciente_id wher
+e condicion_medica like '%fatigue%';
++-----------+--------------+-----------+
+| nombre    | apellido_pat | genero    |
++-----------+--------------+-----------+
+| Duangkaew | Piveteau     | femenino  |
+| Mary      | Sluis        | femenino  |
+| Moss      | Shanbhogue   | masculino |
+| Lucien    | Rosenbaum    | masculino |
++-----------+--------------+-----------+
+4 rows in set (0.00 sec)
+mysql-sql>
+
+listado de pacientes y empleados registrados en la base de datos
+
+mysql-sql> select A.nombre, A.apellido_pat, B.nombre, B.apellido_pat, C.fecha_ad
+mision from empleados A
+       ... inner join registro_pacientes C on A.empleados_id = C.registro_por_em
+pleado_id
+       ... inner join pacientes B on B.paciente_id = C.paciente_id;
++-----------+--------------+------------+--------------+----------------+
+| nombre    | apellido_pat | nombre     | apellido_pat | fecha_admision |
++-----------+--------------+------------+--------------+----------------+
+| Alejandro | McAlpine     | Georgi     | Facello      | 2017-04-08     |
+| Alejandro | McAlpine     | Karsten    | Joslin       | 2017-05-09     |
+| Breannda  | Billingsley  | Bezalel    | Simmel       | 2017-04-09     |
+| Breannda  | Billingsley  | Jeong      | Reistad      | 2017-05-10     |
+| Tse       | Herber       | Parto      | Bamford      | 2017-04-10     |
+| Tse       | Herber       | Arif       | Merlo        | 2017-05-10     |
+| Anoosh    | Peyn         | Chirstian  | Koblick      | 2017-04-12     |
+| Anoosh    | Peyn         | Bader      | Swan         | 2017-05-11     |
+| Gino      | Leonhardt    | Kyoichi    | Maliniak     | 2017-04-12     |
+| Gino      | Leonhardt    | Alain      | Chappelet    | 2017-05-13     |
+| Udi       | Jansh        | Anneke     | Preusig      | 2017-04-14     |
+| Udi       | Jansh        | Adamantios | Portugali    | 2017-05-14     |
+| Satosi    | Awdeh        | Tzvetan    | Zielinski    | 2017-04-15     |
+| Satosi    | Awdeh        | Pradeep    | Makrucki     | 2017-05-14     |
+| Kwee      | Schusler     | Saniya     | Kalloufi     | 2017-04-15     |
+| Kwee      | Schusler     | Huan       | Lortz        | 2017-05-15     |
+| Claudi    | Stavenow     | Sumant     | Peac         | 2017-04-16     |
+| Claudi    | Stavenow     | Alejandro  | Brender      | 2017-05-16     |
+| Charlene  | Brattka      | Duangkaew  | Piveteau     | 2017-04-17     |
+| Charlene  | Brattka      | Weiyi      | Meriste      | 2017-05-18     |
+| Margareta | Bierman      | Mary       | Sluis        | 2017-04-18     |
+| Margareta | Bierman      | Uri        | Lenart       | 2017-05-18     |
+| Reuven    | Garigliano   | Patricio   | Bridglnad    | 2017-04-19     |
+| Reuven    | Garigliano   | Magy       | Stamatiou    | 2017-05-20     |
+| Hisao     | Lipner       | Eberhardt  | Terkki       | 2017-04-20     |
+| Hisao     | Lipner       | Yishay     | Tzvieli      | 2017-05-21     |
+| Hironoby  | Sidou        | Berni      | Genin        | 2017-04-22     |
+| Hironoby  | Sidou        | Mingsen    | Casley       | 2017-05-22     |
+| Shir      | McClurg      | Guoxiang   | Nooteboom    | 2017-04-22     |
+| Shir      | McClurg      | Moss       | Shanbhogue   | 2017-05-23     |
+| Mokhtar   | Bernatsky    | Kazuhito   | Cappelleti   | 2017-04-24     |
+| Mokhtar   | Bernatsky    | Lucien     | Rosenbaum    | 2017-05-23     |
+| Gao       | Dolinsky     | Cristinel  | Bouloucos    | 2017-04-24     |
+| Gao       | Dolinsky     | Zvonko     | Nyanchama    | 2017-05-25     |
+| Erez      | Ritzmann     | Kazuhide   | Peha         | 2017-04-25     |
+| Erez      | Ritzmann     | Florian    | Syrotiuk     | 2017-05-25     |
+| Mona      | Azuma        | Lillian    | Haddadi      | 2017-04-27     |
+| Mona      | Azuma        | Basil      | Tramer       | 2017-05-27     |
+| Danel     | Mondadori    | Mayuko     | Warwick      | 2017-04-28     |
+| Danel     | Mondadori    | Yinghua    | Dredge       | 2017-05-28     |
+| Kshitij   | Gils         | Ramzi      | Erde         | 2017-04-28     |
+| Kshitij   | Gils         | Hidefumi   | Caine        | 2017-05-29     |
+| Premal    | Baek         | Shahaf     | Famili       | 2017-04-30     |
+| Premal    | Baek         | Heping     | Nitsch       | 2017-05-29     |
+| Zhongwei  | Rosen        | Bojan      | Montemayor   | 2017-05-01     |
+| Zhongwei  | Rosen        | Sanjiv     | Zschoche     | 2017-05-31     |
+| Parviz    | Lortz        | Suzette    | Pettey       | 2017-05-01     |
+| Parviz    | Lortz        | Mayumi     | Schueller    | 2017-05-31     |
+| Vishv     | Zockler      | Prasadram  | Heyers       | 2017-05-02     |
+| Vishv     | Zockler      | Georgy     | Dredge       | 2017-06-01     |
+| Tuval     | Kalloufi     | Yongqiao   | Berztiss     | 2017-05-04     |
+| Tuval     | Kalloufi     | Brendon    | Bernini      | 2017-06-02     |
+| Kenroku   | Malabarba    | Divier     | Reistad      | 2017-05-04     |
+| Kenroku   | Malabarba    | Ebbe       | Callaway     | 2017-06-04     |
+| Somnath   | Foote        | Domenick   | Tempesti     | 2017-05-06     |
+| Somnath   | Foote        | Berhard    | McFarlin     | 2017-06-05     |
+| Xinglin   | Eugenio      | Otmar      | Herbst       | 2017-05-07     |
+| Jungsoon  | Syrzycki     | Elvis      | Demeyer      | 2017-05-07     |
++-----------+--------------+------------+--------------+----------------+
+58 rows in set (0.00 sec)
+mysql-sql>
+
+
+Listado de pacientes ordenado alfabeticamente por apellido y sus cuentas, 
+mostrando detalle del adeudo para cada cliente
+
+
+mysql-sql> select A.nombre, A.apellido_pat, B.fecha_emision, C.detalle, C.cantid
+ad, C.costo_total, C.(cantidad*costo_total) as Adeudo from pacientes A
+       ... inner join cuentas_pacientes B on A.paciente_id = B.paciente_id
+       ... inner join cuentas_pacientes_detalles on B.cuentas_pacientes_id = C.c
+uentas_pacientes_id;
+
+mysql-sql>

@@ -1,0 +1,424 @@
+nombre de productos que tengan alguna compra
+products
+orderdetails
+
+MySQL Shell 1.0.10
+
+Copyright (c) 2016, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+Currently in JavaScript mode. Use \sql to switch to SQL mode and execute queries
+.
+mysql-js> \sql
+Switching to SQL mode... Commands end with ;
+mysql-sql> \connect -c root@localhost
+Creating a Classic Session to 'root@localhost'
+Enter password: ****
+Your MySQL connection id is 3
+Server version: 5.7.20-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| datos_personal     |
+| ejercicios         |
+| evaluacion_2       |
+| mundo              |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| tecnologico        |
+| world              |
++--------------------+
+11 rows in set (0.05 sec)
+mysql-sql> use mundo
+       ... ;
+Query OK, 0 rows affected (0.00 sec)
+mysql-sql> show tables;
++----------------------+
+| Tables_in_mundo      |
++----------------------+
+| categories           |
+| ciudadano            |
+| ciudades             |
+| comida_mundo         |
+| copia_paises         |
+| copia_paises_temp    |
+| customercustomerdemo |
+| customerdemographics |
+| customers            |
+| employees            |
+| employeeterritories  |
+| oceanos              |
+| orderdetails         |
+| orders               |
+| paises               |
+| paises_copia         |
+| products             |
+| region               |
+| shippers             |
+| suppliers            |
+| territories          |
+| viajero              |
++----------------------+
+22 rows in set (0.00 sec)
+mysql-sql> select distinct (A.productname) as productname from products A
+       ... inner join orderdetails B on A.productid = B.productid;
++----------------------------------+
+| productname                      |
++----------------------------------+
+| Alice Mutton                     |
+| Aniseed Syrup                    |
+| Boston Crab Meat                 |
+| Camembert Pierrot                |
+| Carnarvon Tigers                 |
+| Chai                             |
+| Chang                            |
+| Chartreuse verte                 |
+| Chef Anton's Cajun Seasoning     |
+| Chef Anton's Gumbo Mix           |
+| Chocolade                        |
+| Cte de Blaye                     |
+| Escargots de Bourgogne           |
+| Filo Mix                         |
+| Flotemysost                      |
+| Geitost                          |
+| Genen Shouyu                     |
+| Gnocchi di nonna Alice           |
+| Gorgonzola Telino                |
+| Grandma's Boysenberry Spread     |
+| Gravad lax                       |
+| Guaran Fantstica                 |
+| Gudbrandsdalsost                 |
+| Gula Malacca                     |
+| Gumbr Gummibrchen                |
+| Gustaf's Knckebrd                |
+| Ikura                            |
+| Inlagd Sill                      |
+| Ipoh Coffee                      |
+| Jack's New England Clam Chowder  |
+| Konbu                            |
+| Lakkalikri                       |
+| Laughing Lumberjack Lager        |
+| Longlife Tofu                    |
+| Louisiana Fiery Hot Pepper Sauce |
+| Louisiana Hot Spiced Okra        |
+| Manjimup Dried Apples            |
+| Mascarpone Fabioli               |
+| Maxilaku                         |
+| Mishi Kobe Niku                  |
+| Mozzarella di Giovanni           |
+| Nord-Ost Matjeshering            |
+| Northwoods Cranberry Sauce       |
+| NuNuCa Nu-Nougat-Creme           |
+| Original Frankfurter grne Soe    |
+| Outback Lager                    |
+| Pavlova                          |
+| Perth Pasties                    |
+| Pt chinois                       |
+| Queso Cabrales                   |
+| Queso Manchego La Pastora        |
+| Raclette Courdavault             |
+| Ravioli Angelo                   |
+| Rd Kaviar                        |
+| Rhnbru Klosterbier               |
+| Rogede sild                      |
+| Rssle Sauerkraut                 |
+| Sasquatch Ale                    |
+| Schoggi Schokolade               |
+| Scottish Longbreads              |
+| Singaporean Hokkien Fried Mee    |
+| Sir Rodney's Marmalade           |
+| Sir Rodney's Scones              |
+| Sirop d'rable                    |
+| Spegesild                        |
+| Steeleye Stout                   |
+| Tarte au sucre                   |
+| Teatime Chocolate Biscuits       |
+| Thringer Rostbratwurst           |
+| Tofu                             |
+| Tourtire                         |
+| Tunnbrd                          |
+| Uncle Bob's Organic Dried Pears  |
+| Valkoinen suklaa                 |
+| Vegie-spread                     |
+| Wimmers gute Semmelkndel         |
+| Zaanse koeken                    |
++----------------------------------+
+77 rows in set (0.06 sec)
+mysql-sql>
+
+
+
+
+inner join en el resultado de una consulta
+
+mysql-sql> select A.productname as productname from A.products
+       ... inner join (select distinct (productid) as productid from orderdetail
+s) B on A.productid = B.productid;
+ERROR: 1146 (42S02): Table 'a.products' doesn't exist
+mysql-sql> select A.productname as productname from A.product
+       ... inner join (select distinct (productid) as productid from orderdetail
+s) B on A.productid = B.productid;
+ERROR: 1146 (42S02): Table 'a.product' doesn't exist
+mysql-sql> select A.productname as productname from products A
+       ... inner join (select distinct (productid) as productid from orderdetail
+s) B on A.productid = B.productid;
++----------------------------------+
+| productname                      |
++----------------------------------+
+| Chai                             |
+| Chang                            |
+| Aniseed Syrup                    |
+| Chef Anton's Cajun Seasoning     |
+| Chef Anton's Gumbo Mix           |
+| Grandma's Boysenberry Spread     |
+| Uncle Bob's Organic Dried Pears  |
+| Northwoods Cranberry Sauce       |
+| Mishi Kobe Niku                  |
+| Ikura                            |
+| Queso Cabrales                   |
+| Queso Manchego La Pastora        |
+| Konbu                            |
+| Tofu                             |
+| Genen Shouyu                     |
+| Pavlova                          |
+| Alice Mutton                     |
+| Carnarvon Tigers                 |
+| Teatime Chocolate Biscuits       |
+| Sir Rodney's Marmalade           |
+| Sir Rodney's Scones              |
+| Gustaf's Knckebrd                |
+| Tunnbrd                          |
+| Guaran Fantstica                 |
+| NuNuCa Nu-Nougat-Creme           |
+| Gumbr Gummibrchen                |
+| Schoggi Schokolade               |
+| Rssle Sauerkraut                 |
+| Thringer Rostbratwurst           |
+| Nord-Ost Matjeshering            |
+| Gorgonzola Telino                |
+| Mascarpone Fabioli               |
+| Geitost                          |
+| Sasquatch Ale                    |
+| Steeleye Stout                   |
+| Inlagd Sill                      |
+| Gravad lax                       |
+| Cte de Blaye                     |
+| Chartreuse verte                 |
+| Boston Crab Meat                 |
+| Jack's New England Clam Chowder  |
+| Singaporean Hokkien Fried Mee    |
+| Ipoh Coffee                      |
+| Gula Malacca                     |
+| Rogede sild                      |
+| Spegesild                        |
+| Zaanse koeken                    |
+| Chocolade                        |
+| Maxilaku                         |
+| Valkoinen suklaa                 |
+| Manjimup Dried Apples            |
+| Filo Mix                         |
+| Perth Pasties                    |
+| Tourtire                         |
+| Pt chinois                       |
+| Gnocchi di nonna Alice           |
+| Ravioli Angelo                   |
+| Escargots de Bourgogne           |
+| Raclette Courdavault             |
+| Camembert Pierrot                |
+| Sirop d'rable                    |
+| Tarte au sucre                   |
+| Vegie-spread                     |
+| Wimmers gute Semmelkndel         |
+| Louisiana Fiery Hot Pepper Sauce |
+| Louisiana Hot Spiced Okra        |
+| Laughing Lumberjack Lager        |
+| Scottish Longbreads              |
+| Gudbrandsdalsost                 |
+| Outback Lager                    |
+| Flotemysost                      |
+| Mozzarella di Giovanni           |
+| Rd Kaviar                        |
+| Longlife Tofu                    |
+| Rhnbru Klosterbier               |
+| Lakkalikri                       |
+| Original Frankfurter grne Soe    |
++----------------------------------+
+77 rows in set (0.04 sec)
+mysql-sql>
+
+
+
+
+ventas totales (cantidad de articulos)  por orden de compra
+	group by 
+10248
+
+
+mysql-sql> desc orders;
++----------------+---------------+------+-----+---------+----------------+
+| Field          | Type          | Null | Key | Default | Extra          |
++----------------+---------------+------+-----+---------+----------------+
+| OrderID        | int(11)       | NO   | PRI | null    | auto_increment |
+| CustomerID     | varchar(5)    | YES  | MUL | null    |                |
+| EmployeeID     | int(11)       | YES  | MUL | null    |                |
+| OrderDate      | datetime      | YES  | MUL | null    |                |
+| RequiredDate   | datetime      | YES  |     | null    |                |
+| ShippedDate    | datetime      | YES  | MUL | null    |                |
+| ShipVia        | int(11)       | YES  | MUL | null    |                |
+| Freight        | decimal(10,4) | YES  |     | 0.0000  |                |
+| ShipName       | varchar(40)   | YES  |     | null    |                |
+| ShipAddress    | varchar(60)   | YES  |     | null    |                |
+| ShipCity       | varchar(15)   | YES  |     | null    |                |
+| ShipRegion     | varchar(15)   | YES  |     | null    |                |
+| ShipPostalCode | varchar(10)   | YES  | MUL | null    |                |
+| ShipCountry    | varchar(15)   | YES  |     | null    |                |
++----------------+---------------+------+-----+---------+----------------+
+14 rows in set (0.01 sec)
+mysql-sql> select * from orders limit 1;
++---------+------------+------------+--------------------+--------------------+-
+-------------------+---------+---------+---------------------------+------------
+--------+----------+------------+----------------+-------------+
+| OrderID | CustomerID | EmployeeID | OrderDate          | RequiredDate       |
+ShippedDate        | ShipVia | Freight | ShipName                  | ShipAddress
+        | ShipCity | ShipRegion | ShipPostalCode | ShipCountry |
++---------+------------+------------+--------------------+--------------------+-
+-------------------+---------+---------+---------------------------+------------
+--------+----------+------------+----------------+-------------+
+|   10248 | VINET      |          5 | 1996-07-04 0:00:00 | 1996-00-00 0:00:00 |
+1996-07-16 0:00:00 |       3 | 32.3800 | Vins et alcools Chevalier | 59 rue de l
+-Abbaye | Reims    | null       | 51100          | France      |
++---------+------------+------------+--------------------+--------------------+-
+-------------------+---------+---------+---------------------------+------------
+--------+----------+------------+----------------+-------------+
+1 row in set (0.00 sec)
+mysql-sql> select * from orderdetails where orderid=10248
+       ... ;
++---------+-----------+-----------+----------+----------+
+| OrderID | ProductID | UnitPrice | Quantity | Discount |
++---------+-----------+-----------+----------+----------+
+|   10248 |        11 |   14.0000 |       12 |        0 |
+|   10248 |        42 |    9.8000 |       10 |        0 |
+|   10248 |        72 |   34.8000 |        5 |        0 |
++---------+-----------+-----------+----------+----------+
+3 rows in set (0.00 sec)
+mysql-sql> select sum(quantity) from orderdetails where orderid=10248
+       ... ;
++---------------+
+| sum(quantity) |
++---------------+
+|            27 |
++---------------+
+1 row in set (0.00 sec)
+mysql-sql>
+
+
+orderid --> total_quantity
+
+mysql-sql> select A.orderid, sum(B.quantity) from orders A
+       ... inner join orderdetails B on A.orderid = B.orderid;
++---------+-----------------+
+| orderid | sum(B.quantity) |
++---------+-----------------+
+|   10258 |           51317 |
++---------+-----------------+
+1 row in set (0.03 sec)
+mysql-sql> select A.orderid, sum(B.quantity) from orders A
+       ... inner join orderdetails B on A.orderid = B.orderid
+       ... group by (A.orderid) limit 10;
++---------+-----------------+
+| orderid | sum(B.quantity) |
++---------+-----------------+
+|   10248 |              27 |
+|   10249 |              49 |
+|   10250 |              60 |
+|   10251 |              41 |
+|   10252 |             105 |
+|   10253 |             102 |
+|   10254 |              57 |
+|   10255 |             110 |
+|   10256 |              27 |
+|   10257 |              46 |
++---------+-----------------+
+10 rows in set (0.00 sec)
+mysql-sql>
+
+mysql-sql> select A.orderid, sum(B.quantity * B.unitprice) as subtotal from orde
+rs A
+       ... inner join orderdetails B on A.orderid = B.orderid
+       ... group by (A.orderid) limit 10;
++---------+-----------+
+| orderid | subtotal  |
++---------+-----------+
+|   10248 |  440.0000 |
+|   10249 | 1863.4000 |
+|   10250 | 1813.0000 |
+|   10251 |  670.8000 |
+|   10252 | 3730.0000 |
+|   10253 | 1444.8000 |
+|   10254 |  625.2000 |
+|   10255 | 2490.5000 |
+|   10256 |  517.8000 |
+|   10257 | 1119.9000 |
++---------+-----------+
+10 rows in set (0.00 sec)
+mysql-sql>
+
+cuanto ha comprado cada cliente que hay
+nombre cliente, total vendido
+
+orderdetails A
+customers B
+orders C
+
+mysql-sql> select B.contactname, A.orderid, sum(A.quantity * A.unitprice) as sub
+total from orderdetails A
+       ... inner join orders C on A.orderid = C.orderid
+       ... inner join customers B on B.customerid = C.customerid
+       ... limit 10;
++--------------+---------+--------------+
+| contactname  | orderid | subtotal     |
++--------------+---------+--------------+
+| Maria Anders |   10643 | 1354458.5900 |
++--------------+---------+--------------+
+1 row in set (0.11 sec)
+mysql-sql> select B.contactname, A.orderid, sum(A.quantity * A.unitprice) as sub
+total from orderdetails A
+       ... inner join orders C on A.orderid = C.orderid
+       ... inner join customers B on B.customerid = C.customerid;
++--------------+---------+--------------+
+| contactname  | orderid | subtotal     |
++--------------+---------+--------------+
+| Maria Anders |   10643 | 1354458.5900 |
++--------------+---------+--------------+
+1 row in set (0.01 sec)
+mysql-sql> select B.contactname, A.orderid, sum(A.quantity * A.unitprice) as sub
+total from orderdetails A
+       ... inner join orders C on A.orderid = C.orderid
+       ... inner join customers B on B.customerid = C.customerid
+       ... group by  (contactname) limit 10;
++--------------------+---------+------------+
+| contactname        | orderid | subtotal   |
++--------------------+---------+------------+
+| Alejandra Camino   |   10281 |  1467.2900 |
+| Alexander Feuer    |   10277 |  5042.2000 |
+| Ana Trujillo       |   10308 |  1402.9500 |
+| Anabela Domingues  |   10292 |  7310.6200 |
+| Andr Fonseca       |   10423 |  8702.2300 |
+| Ann Devon          |   10364 | 15033.6600 |
+| Annette Roulet     |   10350 | 10272.3500 |
+| Antonio Moreno     |   10365 |  7515.3500 |
+| Aria Cruz          |   10347 |  4438.9000 |
+| Art Braunschweiger |   10271 | 12489.7000 |
++--------------------+---------+------------+
+10 rows in set (0.00 sec)
+mysql-sql>
